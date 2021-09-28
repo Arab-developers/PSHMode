@@ -58,11 +58,14 @@ unset _FILE_SOURCE_PATH
 
 # Add HackerMode path to virtual system path
 _OLD_VIRTUAL_PATH="$PATH"
-for bin_folder in $(find $VIRTUAL_ENV/tools/ -name "bin"); do
-  if [[ -d "$bin_folder" ]]; then
-    PATH="$bin_folder:$PATH"
-  fi
-done
+
+if [ -d $VIRTUAL_ENV/tools ]; then
+  for bin_folder in $(find $VIRTUAL_ENV/tools/ -name "bin"); do
+    if [[ -d "$bin_folder" ]]; then
+      PATH="$bin_folder:$PATH"
+    fi
+  done
+fi
 export PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # prompt setting (HackerMode cmd Style) and intro
