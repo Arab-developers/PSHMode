@@ -1,0 +1,18 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;option&gt; &lt;mac&gt;</line>
+</section>
+
+<section title="commands">
+    <line command="-m  --mac">تغيير مباشر لعنوان الماك</line>
+    <line command="-i  --interface">تغيير الواجهة التى سيعمل عليها</line>
+    <line command="-d  --default">إعادة تعيين عنوان mac إلى الأصل</line>
+    <line command="-h  --help">لإظهار قائمة المساعدة</line>
+</section>
+
+<section title="Examples">
+    <line command="chmac">[green]-m[/green] [white]64:A1:B7:44:22:63[/white]</line>
+    <line command="chmac">[green]-m[/green] [white]64:A1:B7:44:22:63[/white] [green]-i[/green] [blue]wlan0[/blue]</line>
+</section>
+

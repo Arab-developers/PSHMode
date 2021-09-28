@@ -1,0 +1,76 @@
+#!/usr/bin/python3
+import getmac
+import nmap
+import socket
+
+from N4Tools.Design import ThreadAnimation, Color, AnimationTools, Animation
+from N4Tools.terminal import terminal
+from requests import get
+from rich import box
+from rich.live import Live
+from rich.table import Table
+
+terminal = terminal()
+CO = Color()
+AN = Animation()
+
+
+class networkInfo:
+    def __init__(self):
+        hosts = self.internal_ip.split('.')
+        hosts = '.'.join(hosts[:-1]) + '.0/24'
+        self.Nmap = nmap.PortScanner()
+        self.Nmap.scan(hosts=hosts, arguments='-sP')
+
+    @property
+    def internal_ip(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+
+    @property
+    def external_ip(self):
+        return get('http://ipinfo.io/json').json()
+
+    def IpInfo(self):
+        table = Table(expand=True, title='IP INFO', box=box.SQUARE_DOUBLE_HEAD)
+        table.add_column("option", style='yellow')
+        table.add_column("value", style='green')
+
+        with Live(table, refresh_per_second=1):
+            table.add_row("internal", f"{self.internal_ip}")
+            for key, val in self.external_ip.items():
+                if key not in ['hostname', 'readme']:
+                    key = key.replace('ip', 'external')
+                    table.add_row(key, val)
+
+    def wifiUsers(self):
+        table = Table(expand=True, title='WIFI USERS', box=box.SQUARE_DOUBLE_HEAD, show_lines=True)
+        table.add_column("Device", style='cyan')
+        table.add_column("external ip", style='green')
+        table.add_column("mac addrres", style='green')
+
+        with Live(table, refresh_per_second=1):
+            for ip in self.Nmap.all_hosts():
+                device_name = socket.getfqdn(ip)
+                device_name = '[red]Unknow' if device_name == ip else device_name
+                mac = getmac.get_mac_address(ip=ip)
+                table.add_row(f"{device_name}", f"{ip}", f"{mac if mac else '[red]Unknow'}")
+
+
+text_anim = AnimationTools.set_text_anim('Network scan is in progress...')
+kwargs = (lambda **kwargs: kwargs)(text=text_anim)
+
+
+@ThreadAnimation(Animation=AN.Loading, kwargs=kwargs, timer=.15)
+def result(Thread):
+    obj = networkInfo()
+    return obj
+
+
+if __name__ == '__main__':
+    obj = result()
+    obj.IpInfo()
+    obj.wifiUsers()

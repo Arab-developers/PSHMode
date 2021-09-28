@@ -1,0 +1,8 @@
+#!/usr/bin/python3
+import os
+import sys
+from N4Tools.Design import ThreadAnimation
+
+reader = lambda Thread, path: os.popen(f'pygmentize {path}').read()
+if len(out := sys.argv) > 1:
+    print(ThreadAnimation()(reader)(' '.join(out[1:])))

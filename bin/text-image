@@ -1,0 +1,61 @@
+#!/usr/bin/python3
+import requests
+from bs4 import BeautifulSoup as Soup
+from N4Tools.Design import Color, ThreadAnimation
+
+
+class GetText:
+    def __init__(self, image, width, invert, contrast):
+        self.image = image
+        self.width = width
+        self.invert = invert
+        self.contrast = contrast
+        self.MainLink = 'https://www.text-image.com/convert/'
+
+    def GET(self):
+        header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0',
+                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                  'Accept-Language': 'en-US,en;q=0.5', 'Accept-Encoding': 'gzip, deflate', 'DNT': '1',
+                  'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'}  # Headers
+        params = {'width': self.width, 'textcolor': 'BLACK', 'bgcolor': 'WHITE', 'invert': self.invert,
+                  'contrast': self.contrast}
+        r = requests.post('https://www.text-image.com/convert/pic2ascii.cgi', data=params, headers=header,
+                          files={'image': open(self.image, 'rb')})
+        return Soup(r.text, 'html.parser')
+
+    def GETTEXT(self, Code):
+        return Code.find('pre').text
+
+    def GETASCII(self):
+        return self.GETTEXT(self.GET())
+
+
+def inputs():
+    proinput = lambda Name: input(Color().reader(f'[$LYELLOW]{Name}[$GREEN]~[$LRED]/[$LWIHTE]$ [$WIHTE]'))
+    image = proinput('PathImage')
+    try:
+        openfile = open(image, 'rb')
+    except Exception as e:
+        print(e);exit()
+    width = proinput('Width')
+    invert = proinput('Invert[$LRED]-[$LBLUE]([$NORMAL]1[$LRED]/[$NORMAL]0[$LBLUE])')
+    contrast = proinput('Contrast[$LRED]-[$LBLUE]([$NORMAL]1[$LRED]/[$NORMAL]0[$LBLUE])')
+    return [(image),
+            (width if width.isnumeric() else '100'),
+            (invert if len(invert) == 1 and invert.isnumeric() else '1'),
+            (contrast if len(contrast) == 1 and contrast.isnumeric() else '1')]
+
+
+def Main():
+    a = GetText(*inputs())
+
+    @ThreadAnimation()
+    def Get(Thread):
+        rcv = a.GETASCII()
+        Thread.kill = True
+        return rcv
+
+    return Get()
+
+
+print(Main())

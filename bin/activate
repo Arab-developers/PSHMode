@@ -1,0 +1,109 @@
+#!/usr/bin/bash
+
+function exit() {
+  # reset old environment variables
+  if [ -n "${_OLD_VIRTUAL_PATH:-}" ]; then
+    PATH="${_OLD_VIRTUAL_PATH:-}"
+    export PATH
+    unset _OLD_VIRTUAL_PATH
+  fi
+  if [ -n "${_OLD_VIRTUAL_PYTHONHOME:-}" ]; then
+    PYTHONHOME="${_OLD_VIRTUAL_PYTHONHOME:-}"
+    export PYTHONHOME
+    unset _OLD_VIRTUAL_PYTHONHOME
+  fi
+
+  if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ]; then
+    hash -r 2>/dev/null
+  fi
+
+  if [ -n "${_OLD_VIRTUAL_PS1:-}" ]; then
+    PS1="${_OLD_VIRTUAL_PS1:-}"
+    export PS1
+    unset _OLD_VIRTUAL_PS1
+  fi
+
+  unset VIRTUAL_ENV
+  unset tiU
+  unset apVU
+
+  if [ ! "${1:-}" = "nondestructive" ]; then
+    # Self destruct!
+    unset -f exit
+  fi
+  #  exit
+}
+
+# unset irrelevant variables
+exit nondestructive
+
+# HackerMode path
+_FILE_SOURCE_PATH=$(realpath "$0")
+if [[ "$_FILE_SOURCE_PATH" =~ .+activate ]]; then
+  VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
+elif [[ "$_FILE_SOURCE_PATH" =~ .+bash ]]; then
+  _FILE_SOURCE_PATH=$(realpath "$BASH_SOURCE")
+  VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
+else
+  echo "# can't find HackerMode path!"
+  exit
+fi
+VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
+apVU=$(python3 $VIRTUAL_ENV/lib/shell.py apVU) &>/dev/null
+tiU=$(python3 $VIRTUAL_ENV/lib/shell.py tiU) &>/dev/null
+export VIRTUAL_ENV
+export tiU
+export apVU
+unset _FILE_SOURCE_PATH
+
+# Add HackerMode path to virtual system path
+_OLD_VIRTUAL_PATH="$PATH"
+for bin_folder in $(find $VIRTUAL_ENV/tools/ -name "bin"); do
+  if [[ -d "$bin_folder" ]]; then
+    PATH="$bin_folder:$PATH"
+  fi
+done
+export PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# prompt setting (HackerMode cmd Style) and intro
+
+if [ -f $VIRTUAL_ENV/etc/motd ]; then
+  cat $VIRTUAL_ENV/etc/motd
+fi
+
+if [[ $tiU =~ tiU ]]; then
+  if [[ -z "${VIRTUAL_ENV_DISABLE_PROMPT:-}" && "$0" =~ bash$ ]]; then
+    if [ -d /data/data/com.termux/files/home ]; then
+      _OLD_VIRTUAL_PS1=$PS1
+      source "$VIRTUAL_ENV/etc/bash.bashrc"
+      export PS1
+    else
+      _OLD_VIRTUAL_PS1=$PS1
+      source "$VIRTUAL_ENV/etc/bash.bashrc"
+      PS1=$_OLD_VIRTUAL_PS1
+      export PS1
+    fi
+  else
+    _OLD_VIRTUAL_PS1=$PS1
+    source "$VIRTUAL_ENV/etc/bash.bashrc"
+    PS1=$_OLD_VIRTUAL_PS1
+    export PS1
+  fi
+else
+  python3 -c "print(*'''$tiU'''.split('#'),sep='#')"
+  exit
+  return
+fi
+
+if ! [[ $apVU =~ apVU ]]; then
+  python3 -c "print(*'''$apVU'''.split('#'),sep='#')"
+  exit
+  return
+fi
+
+# This should detect bash and zsh, which have a hash command that must
+# be called to get it to forget past commands.  Without forgetting
+# past commands the $PATH changes we made may not be respected
+if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ]; then
+  hash -r 2>/dev/null
+fi

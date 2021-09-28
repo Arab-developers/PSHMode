@@ -1,0 +1,28 @@
+#!/usr/bin/python3 -B
+import os
+import sys
+from N4Tools.Design import ThreadAnimation, Animation, AnimationTools
+
+sys.path.append(__file__.rsplit("/", 2)[0]+"/lib")
+from size import Size
+size = os.path
+
+text_anim = AnimationTools.set_text_anim('Calculating the size...')
+AN = Animation()
+kwargs = (lambda **kwargs: kwargs)(text=text_anim)
+
+
+@ThreadAnimation(Animation=AN.Loading, kwargs=kwargs)
+def App(Thread):
+    out = []
+    for p in sys.argv[1:]:
+        try:
+            out.append(f"{p} \033[93m{Size(p).size}\033[0m")
+        except:
+            out.append(f"[Errno 2] No such file or directory: '{p}")
+    Thread.kill()
+    print('\n'.join(out))
+
+
+if __name__ == "__main__":
+    App()

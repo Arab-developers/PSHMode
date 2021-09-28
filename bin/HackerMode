@@ -1,0 +1,27 @@
+#!/usr/bin/python3 -B
+import sys
+
+sys.path.append(__file__.rsplit("/", 2)[0])
+from setup import HackerModeInstaller
+
+help_msg = """
+\033[1mUSAGE:\033[0m
+  python3 -B HackerMode/ <command>
+
+\033[1mCOMMANDS:\033[0m
+ update   update the tool.
+ check    check all module and packages. 
+ delete   delete the tool from the system.
+""".strip()
+
+if __name__ == "__main__":
+    HackerMode = HackerModeInstaller()
+    if len(sys.argv) > 1:
+        try:
+            HackerMode.__getattribute__(sys.argv[1])()
+        except AttributeError:
+            print(help_msg)
+        except Exception as e:
+            print(e)
+    else:
+        print(help_msg)
