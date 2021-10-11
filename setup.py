@@ -174,7 +174,7 @@ class HackerModeInstaller:
         old_path = os.getcwd()
         os.chdir(os.path.join(os.environ.get("HOME"), ".HackerMode/HackerMode/lib"))
         os.system(
-            """if [ "$PREFIX" == "" ]; then PREFIX="/usr" fi; VERSION=$(python3 -c 'import sys;print(sys.version.split(" ")[0].rsplit(".",1)[0])'); gcc -Os -I /usr/include/python$VERSION -o shell shell.c -lpython$VERSION -lpthread -lm -lutil -ldl; rm shell.c""")
+            """if [ "$PREFIX" == "" ]; then PREFIX="/usr"; fi; VERSION=$(python3 -c 'import sys;print(sys.version.split(" ")[0].rsplit(".",1)[0])'); gcc -Os -I $PREFIX/include/python$VERSION -o shell shell.c -lpython$VERSION -lpthread -lm -lutil -ldl; rm shell.c""")
         os.chdir(old_path)
 
         # install tools packages
