@@ -172,13 +172,13 @@ class HackerModeInstaller:
     def install_tools_packages(self):
         # compile shell file
         old_path = os.getcwd()
-        os.chdir(__file__.rsplit("/", 1)[0] + "/lib")
+        os.chdir(os.path.join(os.environ.get("HOME"), ".HackerMode/HackerMode/lib"))
         os.system(
             """if [ "$PREFIX" == "" ]; then PREFIX="/usr" fi; VERSION=$(python3 -c 'import sys;print(sys.version.split(" ")[0].rsplit(".",1)[0])'); gcc -Os -I /usr/include/python$VERSION -o shell shell.c -lpython$VERSION -lpthread -lm -lutil -ldl; rm shell.c""")
         os.chdir(old_path)
 
         # install tools packages
-        tools_path = __file__.rsplit("/", 1)[0] + "/tools"
+        tools_path = os.path.join(os.environ.get("HOME"), ".HackerMode/HackerMode/tools")
         for root, dirs, files in os.walk(tools_path):
             for dir in dirs:
                 if os.path.exists(os.path.join(root, dir, "setup.sh")):
@@ -187,6 +187,7 @@ class HackerModeInstaller:
                     os.chdir(os.path.join(root, dir))
                     os.system("bash setup.sh")
                     os.chdir(old_path)
+
 
 if __name__ == "__main__":
     x = HackerModeInstaller()
