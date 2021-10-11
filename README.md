@@ -23,7 +23,7 @@ ___
 **termux**:
 1. step
 ```bash
-pkg install python curl wget git
+pkg install python curl wget git unzip
 ```
 2. step
 ```bash
@@ -33,7 +33,7 @@ ___
 **kali linux**:
 1. step
 ```bash
-sudo apt install python3 curl wget git
+sudo apt install python3 curl wget git unzip
 ```
 2. step
 ```bash
