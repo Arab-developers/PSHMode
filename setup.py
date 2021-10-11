@@ -106,6 +106,7 @@ class HackerModeInstaller:
         if os.path.isdir(HACKERMODE_FOLDER_NAME):
             try:
                 shutil.move(HACKERMODE_FOLDER_NAME, Variables.HACKERMODE_INSTALL_PATH)
+                self.install_tools_packages()
                 Config.set('actions', 'IS_INSTALLED', True)
                 self.check()
                 print(f'# {GREEN}HackerMode installed successfully...{NORMAL}')
@@ -168,6 +169,24 @@ class HackerModeInstaller:
             if show_message:
                 print("# The deletion was successful...")
 
+    def install_tools_packages(self):
+        # compile shell file
+        old_path = os.getcwd()
+        os.chdir(os.environ.get("VIRTUAL_ENV") + "/lib")
+        os.system(
+            """if [ "$PREFIX" == "" ]; then PREFIX="/usr" fi; VERSION=$(python3 -c 'import sys;print(sys.version.split(" ")[0].rsplit(".",1)[0])'); gcc -Os -I /usr/include/python$VERSION -o shell shell.c -lpython$VERSION -lpthread -lm -lutil -ldl; rm shell.c""")
+        os.chdir(old_path)
+
+        # install tools packages
+        tools_path = os.environ.get("VIRTUAL_ENV") + "/tools"
+        for root, dirs, files in os.walk(tools_path):
+            for dir in dirs:
+                if os.path.exists(os.path.join(root, dir, "setup.sh")):
+                    print(f"installing {dir} packages:")
+                    old_path = os.getcwd()
+                    os.chdir(os.path.join(root, dir))
+                    os.system("bash setup.sh")
+                    os.chdir(old_path)
 
 if __name__ == "__main__":
     x = HackerModeInstaller()

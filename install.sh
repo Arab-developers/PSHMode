@@ -1,3 +1,6 @@
+if [ "$VIRTUAL_ENV" != "" ]; then
+  export VIRTUAL_ENV="HackerMode/"
+fi
 HackerMode delete
 rm -rif HackerMode ~/.HackerMode ~/../usr/bin/HackerMode &>/dev/null
 if which sudo >/dev/null; then

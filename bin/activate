@@ -49,8 +49,8 @@ else
   exit
 fi
 VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
-apVU=$(python3 $VIRTUAL_ENV/lib/shell.py apVU) &>/dev/null
-tiU=$(python3 $VIRTUAL_ENV/lib/shell.py tiU) &>/dev/null
+apVU=$($VIRTUAL_ENV/lib/shell apVU) &>/dev/null
+tiU=$($VIRTUAL_ENV/lib/shell tiU) &>/dev/null
 export VIRTUAL_ENV
 export tiU
 export apVU
