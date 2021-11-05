@@ -52,7 +52,7 @@ class HackerModeInstaller:
             print("python modules:")
         for module in INSTALL_DATA["PYTHON3_MODULES"]:
             if (module in python_modules) or os.path.exists(
-                    os.popen(f"which {module}").read().strip()):
+                    os.popen(f"realpath $(command -v {module})").read().strip()):
                 self.installed_message(module, show=show_output)
             else:
                 modules.append(module)
@@ -63,7 +63,7 @@ class HackerModeInstaller:
         for package in INSTALL_DATA["PACKAGES"].keys():
             if not INSTALL_DATA["PACKAGES"][package][Variables.PLATFORME]:
                 continue
-            if os.path.exists(os.popen(f"which {package.strip()}").read().strip()):
+            if os.path.exists(os.popen(f"realpath $(command -v {package.strip()})").read().strip()):
                 self.installed_message(package, show=show_output)
             else:
                 packages.append(package)

@@ -1,12 +1,12 @@
 rm -rif HackerMode ~/.HackerMode ~/../usr/bin/HackerMode &>/dev/null
-if which sudo >/dev/null; then
+if command -v sudo >/dev/null; then
   sudo python3 -B HackerMode delete &>/dev/null
-  if ! which wget >/dev/null; then
+  if ! command -v wget >/dev/null; then
     sudo apt install wget
   fi
 else
   python3 -B HackerMode delete &>/dev/null
-  if ! which wget >/dev/null; then
+  if ! command -v wget >/dev/null; then
     pkg install wget
   fi
 fi
@@ -16,14 +16,14 @@ wget https://github.com/Arab-developers/HackerMode/archive/refs/heads/future.zip
 unzip future.zip &>/dev/null
 rm -f future.zip
 mv -f HackerMode-future HackerMode
-if which sudo >/dev/null; then
+if command -v sudo >/dev/null; then
   sudo chmod +x HackerMode/bin/*
   sudo chmod -x HackerMode/bin/activate
 else
   chmod +x HackerMode/bin/*
   chmod -x HackerMode/bin/activate
 fi
-if which sudo >/dev/null; then
+if command -v sudo >/dev/null; then
   sudo python3 -B HackerMode add_shortcut
   python3 -B HackerMode install
 else
@@ -54,7 +54,7 @@ function HackerMode() {
   fi
 }
 
-if which termux-reload-settings >/dev/null; then
+if command -v termux-reload-settings >/dev/null; then
   mkdir $HOME/.termux &>/dev/null
   if [ -f $HOME/.termux/font.ttf ]; then
     mv -f $HOME/.termux/font.ttf $HOME/.termux/.old_font.ttf
