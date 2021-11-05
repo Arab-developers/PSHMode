@@ -17,6 +17,9 @@
     <line command="chmac">تغيير عنوان ماك</line>
     <line command="network-info">لإظهار معلومات الشبكة</line>
     <line command="text-image">تحويل صورة إلى نص</line>
+    <line command="decode">لفك تشفير أي ملف بايثون</line>
+    <line command="chash">تحقق من نوع التشفير</line>
+    <line command="bstrings">سحب النصوص من الملفات المشفره</line>
     <line command="exit">أوقف الأداة</line>
 </section>
 
