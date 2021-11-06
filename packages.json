@@ -59,7 +59,7 @@
   "PYTHON3_MODULES": [
     "N4Tools",
     "rich",
-    "uncompyle6",
+    "uncompyle6==3.7.4",
     "pyfiglet",
     "python-bidi",
     "arabic-reshaper",
