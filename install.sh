@@ -15,6 +15,7 @@ else
     pkg install wget zip unzip
     pkg update -y
     pkg upgrade -y
+    termux-setup-storage
   fi
 fi
 
@@ -68,5 +69,4 @@ if command -v termux-reload-settings >/dev/null; then
   fi
   cp -f $HOME/.HackerMode/HackerMode/share/fonts/DejaVu.ttf $HOME/.termux/font.ttf
   termux-reload-settings
-  termux-setup-storage &> /dev/null
 fi
