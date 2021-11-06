@@ -23,6 +23,12 @@ class HackerModeInstaller:
         function return all modules that installed in system."""
         return os.popen("pip3 freeze").read().split("\n")
 
+    def is_installed(self, module, python_modules):
+        for python_module in python_modules:
+            if module in python_module:
+                return [module, python_module]
+        return False
+
     def installed_message(self, package, show=True):
         if show:
             default_message = f'{package.split("=")[0]} installed successfully.'
@@ -47,8 +53,8 @@ class HackerModeInstaller:
             print("\nCHECKING:")
             print("python modules:")
         for module in INSTALL_DATA["PYTHON3_MODULES"]:
-            if (module in python_modules) or os.path.exists(
-                    os.popen(f"realpath $(command -v {module})").read().strip()):
+            if self.is_installed(module, python_modules) or os.path.exists(
+                    os.popen(f"realpath $(command -v {module}) 2> /dev/null").read().strip()):
                 self.installed_message(module, show=show_output)
             else:
                 modules.append(module)
