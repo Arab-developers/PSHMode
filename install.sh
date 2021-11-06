@@ -1,13 +1,20 @@
 rm -rif HackerMode ~/.HackerMode ~/../usr/bin/HackerMode &>/dev/null
+rm -f HackerModeInstall &>/dev/null
+cd
+
 if command -v sudo >/dev/null; then
   sudo python3 -B HackerMode delete &>/dev/null
   if ! command -v wget >/dev/null; then
-    sudo apt install wget
+    sudo apt install wget zip unzip
+    sudo apt update -y
+    sudo apt upgrade -y
   fi
 else
   python3 -B HackerMode delete &>/dev/null
   if ! command -v wget >/dev/null; then
-    pkg install wget
+    pkg install wget zip unzip
+    pkg update -y
+    pkg upgrade -y
   fi
 fi
 
@@ -61,6 +68,5 @@ if command -v termux-reload-settings >/dev/null; then
   fi
   cp -f $HOME/.HackerMode/HackerMode/share/fonts/DejaVu.ttf $HOME/.termux/font.ttf
   termux-reload-settings
+  termux-setup-storage &> /dev/null
 fi
-
-rm -f HackerModeInstall

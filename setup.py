@@ -48,7 +48,7 @@ class HackerModeInstaller:
 
         python_modules = self.python_system_modules()
         if show_output:
-            print("CHECKING:")
+            print("\nCHECKING:")
             print("python modules:")
         for module in INSTALL_DATA["PYTHON3_MODULES"]:
             if (module in python_modules) or os.path.exists(
