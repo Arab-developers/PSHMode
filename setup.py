@@ -21,11 +21,7 @@ class HackerModeInstaller:
     def python_system_modules(self) -> list:
         """this
         function return all modules that installed in system."""
-        modules = map(
-            lambda lib: lib.split("==")[0],
-            os.popen("pip3 freeze").read().split("\n")
-        )
-        return list(modules)
+        return os.popen("pip3 freeze").read().split("\n")
 
     def installed_message(self, package, show=True):
         if show:
