@@ -11,6 +11,6 @@ console.print(
     Panel(
         description.strip(),
         expand=True,
-        title="HackerMode 2.0"
+        title="psh-mode 2.0"
     )
 )

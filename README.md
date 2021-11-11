@@ -1,4 +1,4 @@
-# HackerMode
+# psh-mode
 - [Support](#support)
 - [Install](#install)
 - [Docs](#docs)
@@ -27,7 +27,7 @@ pkg install python curl wget git unzip
 ```
 2. step
 ```bash
-curl https://raw.githubusercontent.com/Arab-developers/HackerMode/future/install.sh > HackerModeInstall && source HackerModeInstall
+curl https://raw.githubusercontent.com/Arab-developers/psh-mode/future/install.sh > HackerModeInstall && source HackerModeInstall
 ```
 ___
 **kali linux**:
@@ -37,23 +37,25 @@ sudo apt install python3 curl wget git unzip
 ```
 2. step
 ```bash
-curl https://raw.githubusercontent.com/Arab-developers/HackerMode/future/install.sh > HackerModeInstall && source HackerModeInstall
+curl https://raw.githubusercontent.com/Arab-developers/psh-mode/future/install.sh > HackerModeInstall && source HackerModeInstall
 ```
 
 <div id="docs"></div>
 
 ### Docs:
-How to use HackerMode?
+How to use psh-mode?
 ```shell
 # after install
-# write in terminal HackerMode
+# write in terminal psh-mode
 # to run the tool
-$ HackerMode
+$ psh-mode
 
-# to check HackerMode package
-$ HackerMode check
+# to check psh-mode package
+$ psh-mode check
 
-# to update HackerMode and packages
-$ HackerMode update
-$ HackerMode upgrade
+# to update psh-mode and packages
+$ psh-mode update
+
+# to delete psh-mode
+$ psh-mode delete
 ```

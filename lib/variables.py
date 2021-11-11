@@ -2,7 +2,7 @@
 import os
 import sys
 
-HACKERMODE_FOLDER_NAME = "HackerMode"
+HACKERMODE_FOLDER_NAME = "psh-mode"
 
 
 class Variables:
@@ -24,28 +24,28 @@ class Variables:
 
     @property
     def HACKERMODE_SHORTCUT(self) -> str:
-        """HackerMode shortcut"""
+        """psh-mode shortcut"""
         return """
-function HackerMode() {
+function psh-mode() {
   if [ $1 ]; then
     if [ $1 == "check" ]; then
-      $HOME/.HackerMode/HackerMode/bin/HackerMode check
+      $HOME/.psh-mode/psh-mode/bin/psh-mode check
     elif [ $1 == "update" ]; then
       old_path_update=$(pwd)
       cd
-      $HOME/.HackerMode/HackerMode/bin/HackerMode update
+      $HOME/.psh-mode/psh-mode/bin/psh-mode update
       cd $old_path_update
       unset old_path_update
     elif [ $1 == "delete" ]; then
-      $HOME/.HackerMode/HackerMode/bin/HackerMode delete
+      $HOME/.psh-mode/psh-mode/bin/psh-mode delete
     else
-      $HOME/.HackerMode/HackerMode/bin/HackerMode --help
+      $HOME/.psh-mode/psh-mode/bin/psh-mode --help
     fi
   else
     if [ $VIRTUAL_ENV ]; then
-      echo "HackerMode is running..."
+      echo "psh-mode is running..."
     else
-      source $HOME/.HackerMode/HackerMode/bin/activate
+      source $HOME/.psh-mode/psh-mode/bin/activate
     fi
   fi
 }
@@ -53,28 +53,28 @@ function HackerMode() {
 
     @property
     def HACKERMODE_ACTIVATE_FILE_PATH(self) -> str:
-        """To get HackerMode activate file"""
-        return os.path.join(self.HACKERMODE_INSTALL_PATH, "HackerMode/bin/activate")
+        """To get psh-mode activate file"""
+        return os.path.join(self.HACKERMODE_INSTALL_PATH, "psh-mode/bin/activate")
 
     @property
     def HACKERMODE_PATH(self) -> str:
-        """To get real HackerMode path"""
+        """To get real psh-mode path"""
         return '/'.join(os.path.abspath(__file__).split('/')[:-2])
 
     @property
     def HACKERMODE_BIN_PATH(self) -> str:
-        """To get HackerMode [HackerMode/bin/] directory"""
+        """To get psh-mode [psh-mode/bin/] directory"""
         return os.path.join(self.HACKERMODE_PATH, "bin")
 
     @property
     def HACKERMODE_TOOLS_PATH(self) -> str:
-        """To get the HackerMode [HackerMode/tools/] path"""
+        """To get the psh-mode [psh-mode/tools/] path"""
         return os.path.join(self.HACKERMODE_PATH, "tools")
 
     @property
     def HACKERMODE_INSTALL_PATH(self) -> str:
-        """To get the install path [~/.HackerMode/]"""
-        ToolPath = os.path.join(os.environ['HOME'], '.HackerMode')
+        """To get the install path [~/.psh-mode/]"""
+        ToolPath = os.path.join(os.environ['HOME'], '.psh-mode')
         if not os.path.isdir(ToolPath):
             os.mkdir(ToolPath)
         return ToolPath

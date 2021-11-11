@@ -37,7 +37,7 @@ function exit() {
 # unset irrelevant variables
 exit nondestructive
 
-# HackerMode path
+# psh-mode path
 _FILE_SOURCE_PATH=$(realpath "$0")
 if [[ "$_FILE_SOURCE_PATH" =~ .+activate ]]; then
   VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
@@ -45,7 +45,7 @@ elif [[ "$_FILE_SOURCE_PATH" =~ .+bash ]]; then
   _FILE_SOURCE_PATH=$(realpath "$BASH_SOURCE")
   VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
 else
-  echo "# can't find HackerMode path!"
+  echo "# can't find psh-mode path!"
   exit
 fi
 VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
@@ -56,7 +56,7 @@ export tiU
 export apVU
 unset _FILE_SOURCE_PATH
 
-# Add HackerMode path to virtual system path
+# Add psh-mode path to virtual system path
 _OLD_VIRTUAL_PATH="$PATH"
 
 if [ -d $VIRTUAL_ENV/tools ]; then
@@ -68,7 +68,7 @@ if [ -d $VIRTUAL_ENV/tools ]; then
 fi
 export PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# prompt setting (HackerMode cmd Style) and intro
+# prompt setting (psh-mode cmd Style) and intro
 
 if [ -f $VIRTUAL_ENV/etc/motd ]; then
   cat $VIRTUAL_ENV/etc/motd

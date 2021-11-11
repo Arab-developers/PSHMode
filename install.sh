@@ -1,16 +1,18 @@
-rm -rif HackerMode ~/.HackerMode ~/../usr/bin/HackerMode &>/dev/null
-rm -f HackerModeInstall &>/dev/null
+rm -rif psh-mode ~/.psh-mode ~/../usr/bin/psh-mode &>/dev/null
+rm -f psh-modeInstall &>/dev/null
 cd
 
 if command -v sudo >/dev/null; then
-  sudo python3 -B HackerMode delete &>/dev/null
+  sudo python3 -B psh-mode delete &>/dev/null
+  sudo python3 -B psh-mode delete &>/dev/null
   if ! command -v wget >/dev/null; then
     sudo apt install wget zip unzip
     sudo apt update -y
     sudo apt upgrade -y
   fi
 else
-  python3 -B HackerMode delete &>/dev/null
+  python3 -B psh-mode delete &>/dev/null
+  python3 -B psh-mode delete &>/dev/null
   if ! command -v wget >/dev/null; then
     pkg install wget zip unzip
     pkg update -y
@@ -19,45 +21,45 @@ else
   fi
 fi
 
-rm -f future.zip
-wget https://github.com/Arab-developers/HackerMode/archive/refs/heads/future.zip
-unzip future.zip &>/dev/null
-rm -f future.zip
-mv -f HackerMode-future HackerMode
+rm -f main.zip
+wget https://github.com/Arab-developers/psh-mode/archive/refs/heads/main.zip
+unzip main.zip &>/dev/null
+rm -f main.zip
+mv -f psh-mode-main psh-mode
 if command -v sudo >/dev/null; then
-  sudo chmod +x HackerMode/bin/*
-  sudo chmod -x HackerMode/bin/activate
+  sudo chmod +x psh-mode/bin/*
+  sudo chmod -x psh-mode/bin/activate
 else
-  chmod +x HackerMode/bin/*
-  chmod -x HackerMode/bin/activate
+  chmod +x psh-mode/bin/*
+  chmod -x psh-mode/bin/activate
 fi
 if command -v sudo >/dev/null; then
-  sudo python3 -B HackerMode add_shortcut
-  python3 -B HackerMode install
+  sudo python3 -B psh-mode add_shortcut
+  python3 -B psh-mode install
 else
-  if ! [ -d "/sdcard/HackerMode/" ]; then
-    mkdir "/sdcard/HackerMode/"
+  if ! [ -d "/sdcard/psh-mode/" ]; then
+    mkdir "/sdcard/psh-mode/"
   fi
-  python3 -B HackerMode add_shortcut
-  python3 -B HackerMode install
+  python3 -B psh-mode add_shortcut
+  python3 -B psh-mode install
 fi
 
-function HackerMode() {
+function psh-mode() {
   if [ $1 ]; then
     if [ $1 == "check" ]; then
-      $HOME/.HackerMode/HackerMode/bin/HackerMode check
+      $HOME/.psh-mode/psh-mode/bin/psh-mode check
     elif [ $1 == "update" ]; then
-      $HOME/.HackerMode/HackerMode/bin/HackerMode update
+      $HOME/.psh-mode/psh-mode/bin/psh-mode update
     elif [ $1 == "delete" ]; then
-      $HOME/.HackerMode/HackerMode/bin/HackerMode delete
+      $HOME/.psh-mode/psh-mode/bin/psh-mode delete
     else
-      $HOME/.HackerMode/HackerMode/bin/HackerMode --help
+      $HOME/.psh-mode/psh-mode/bin/psh-mode --help
     fi
   else
     if [ $VIRTUAL_ENV ]; then
-      echo "HackerMode is running..."
+      echo "psh-mode is running..."
     else
-      source $HOME/.HackerMode/HackerMode/bin/activate
+      source $HOME/.psh-mode/psh-mode/bin/activate
     fi
   fi
 }
@@ -67,6 +69,6 @@ if command -v termux-reload-settings >/dev/null; then
   if [ -f $HOME/.termux/font.ttf ]; then
     mv -f $HOME/.termux/font.ttf $HOME/.termux/.old_font.ttf
   fi
-  cp -f $HOME/.HackerMode/HackerMode/share/fonts/DejaVu.ttf $HOME/.termux/font.ttf
+  cp -f $HOME/.psh-mode/psh-mode/share/fonts/DejaVu.ttf $HOME/.termux/font.ttf
   termux-reload-settings
 fi

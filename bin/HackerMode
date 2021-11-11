@@ -6,7 +6,7 @@ from setup import HackerModeInstaller
 
 help_msg = """
 \033[1mUSAGE:\033[0m
-  python3 -B HackerMode/ <command>
+  python3 -B psh-mode/ <command>
 
 \033[1mCOMMANDS:\033[0m
  update   update the tool.
@@ -15,10 +15,10 @@ help_msg = """
 """.strip()
 
 if __name__ == "__main__":
-    HackerMode = HackerModeInstaller()
+    psh_mode = HackerModeInstaller()
     if len(sys.argv) > 1:
         try:
-            HackerMode.__getattribute__(sys.argv[1])()
+            psh_mode.__getattribute__(sys.argv[1])()
         except AttributeError:
             print(help_msg)
         except Exception as e:
