@@ -27,7 +27,7 @@ pkg install python curl wget git unzip
 ```
 2. step
 ```bash
-curl https://raw.githubusercontent.com/Arab-developers/psh-mode/future/install.sh > HackerModeInstall && source HackerModeInstall
+curl https://raw.githubusercontent.com/Arab-developers/psh-mode/main/install.sh > HackerModeInstall && source HackerModeInstall
 ```
 ___
 **kali linux**:
@@ -37,7 +37,7 @@ sudo apt install python3 curl wget git unzip
 ```
 2. step
 ```bash
-curl https://raw.githubusercontent.com/Arab-developers/psh-mode/future/install.sh > HackerModeInstall && source HackerModeInstall
+curl https://raw.githubusercontent.com/Arab-developers/psh-mode/main/install.sh > HackerModeInstall && source HackerModeInstall
 ```
 
 <div id="docs"></div>
