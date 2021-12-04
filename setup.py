@@ -95,41 +95,6 @@ class HackerModeInstaller:
 
         # install modules
         for module in need_to_install["modules"]:
-<<<<<<< Updated upstream
-            os.system(f"pip3 install {module}")
-
-        # move psh-mode to install path
-        if Config.get('actions', 'DEBUG', False):
-            print("# can't move the psh-mode folder ")
-            print("# to install path in debug mode!")
-            return None
-        if os.path.isdir(HACKERMODE_FOLDER_NAME):
-            try:
-                shutil.move(HACKERMODE_FOLDER_NAME, Variables.HACKERMODE_INSTALL_PATH)
-                self.install_tools_packages()
-                Config.set('actions', 'IS_INSTALLED', True)
-                self.check()
-                print(f'# {GREEN}psh-mode installed successfully...{NORMAL}')
-            except shutil.Error as e:
-                self.delete(show_message=False)
-                print(e)
-                print('# installed failed!')
-        else:
-            self.delete(show_message=False)
-            print(f'{RED}# Error: the tool path not found!')
-            print(f'# try to run tool using\n# {GREEN}"python3 psh-mode install"{NORMAL}')
-            print('# installed failed!')
-
-    def update(self):
-        if not Config.get('actions', 'DEBUG', cast=bool, default=False):
-            #                                                                     # don't rename
-            hackermode_command_line_path = os.environ.get("_").split("bin/")[0] + "bin/HackerMode"
-            if os.path.exists(hackermode_command_line_path):
-                os.remove(hackermode_command_line_path)
-            os.system(
-                f'curl https://raw.githubusercontent.com/Arab-developers/psh-mode/future/install.sh > HackerModeInstall && bash HackerModeInstall')
-            print(f'# {GREEN}psh-mode updated successfully...{NORMAL}')
-=======
             print(f"Installing {module} ...")
             os.system(f"pip3 install {module} 2>> {logout}")
 
@@ -146,16 +111,11 @@ class HackerModeInstaller:
                 os.remove(hackermode_command_line_path)
             os.system(
                 f'curl https://raw.githubusercontent.com/Arab-developers/PSHMode/main/install.sh > PSHMode.install 2> .PSHMode-install.log && bash PSHMode.install')
->>>>>>> Stashed changes
         else:
             print("# can't update in the DEUBG mode!")
 
     def add_shortcut(self):
-<<<<<<< Updated upstream
-        # add psh-mode shortcut...
-=======
         # add PSHMode shortcut...
->>>>>>> Stashed changes
         try:
             with open(Variables.BASHRIC_FILE_PATH, "r") as f:
                 data = f.read()
@@ -163,14 +123,7 @@ class HackerModeInstaller:
                 with open(Variables.BASHRIC_FILE_PATH, "w") as f:
                     f.write(data + Variables.TOOL_SHORTCUT)
         except PermissionError:
-<<<<<<< Updated upstream
-            print(NORMAL + "# add psh-mode shortcut:")
-            print(f"# '{YELLOW}{Variables.HACKERMODE_SHORTCUT}{NORMAL}'")
-            print("# to this path:")
-            print("# " + Variables.HACKERMODE_BIN_PATH)
-=======
             print(f"# {RED}can't add the tool shortcut!{NORMAL}")
->>>>>>> Stashed changes
 
     def delete(self, show_message=True):
         if show_message:
@@ -178,15 +131,8 @@ class HackerModeInstaller:
         else:
             status = "y"
         if status in ("y", "yes", "ok", "yep"):
-<<<<<<< Updated upstream
-            bin_path = os.path.join(os.environ["SHELL"].split("/bin/")[0], "/bin/psh-mode")
-            tool_path = os.path.join(os.environ["HOME"], ".psh-mode")
-            if os.path.exists(bin_path):
-                os.remove(bin_path)
-=======
             tool_path = os.path.join(os.environ["HOME"], ".PSHMode")
             errors = 0
->>>>>>> Stashed changes
             if os.path.exists(tool_path):
                 try:
                     with open(Variables.BASHRIC_FILE_PATH, "r") as f:
@@ -196,11 +142,6 @@ class HackerModeInstaller:
                             f.write(data.replace(Variables.TOOL_SHORTCUT, ""))
                 except PermissionError:
                     if show_message:
-<<<<<<< Updated upstream
-                        print("# cannot remove psh-mode shortcut!")
-            if show_message:
-                print("# The deletion was successful...")
-=======
                         errors += 1
                         print("# cannot remove PSHMode shortcut!")
                 try:
@@ -214,24 +155,15 @@ class HackerModeInstaller:
             else:
                 if show_message:
                     print("# The deletion was successful...")
->>>>>>> Stashed changes
 
     def install_tools_packages(self):
         # compile shell file
         old_path = os.getcwd()
-<<<<<<< Updated upstream
-        os.chdir(os.path.join(os.environ.get("HOME"), ".psh-mode/psh-mode/lib"))
-=======
         os.chdir(os.path.join(Variables.TOOL_INSTALL_PATH, "lib"))
->>>>>>> Stashed changes
         os.system("bash setup.sh")
         os.chdir(old_path)
 
         # install tools packages
-<<<<<<< Updated upstream
-        tools_path = os.path.join(os.environ.get("HOME"), ".psh-mode/psh-mode/tools")
-        for root, dirs, files in os.walk(tools_path):
-=======
         def run_setup(root, dir):
             old_path = os.getcwd()
             os.chdir(os.path.join(root, dir))
@@ -239,7 +171,6 @@ class HackerModeInstaller:
             os.chdir(old_path)
 
         for root, dirs, files in os.walk(Variables.TOOLS_PATH):
->>>>>>> Stashed changes
             for dir in dirs:
                 if os.path.exists(os.path.join(root, dir, "setup.sh")):
                     print(f"Installing {dir} packages...")

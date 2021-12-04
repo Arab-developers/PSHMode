@@ -2,11 +2,7 @@
 import os
 import sys
 
-<<<<<<< Updated upstream
-HACKERMODE_FOLDER_NAME = "psh-mode"
-=======
 TOOL_NAME = "PSHMode"
->>>>>>> Stashed changes
 
 
 class Variables:
@@ -25,63 +21,6 @@ class Variables:
         return path
 
     @property
-<<<<<<< Updated upstream
-    def HACKERMODE_SHORTCUT(self) -> str:
-        """psh-mode shortcut"""
-        return """
-function psh-mode() {
-  if [ $1 ]; then
-    if [ $1 == "check" ]; then
-      $HOME/.psh-mode/psh-mode/bin/psh-mode check
-    elif [ $1 == "update" ]; then
-      old_path_update=$(pwd)
-      cd
-      $HOME/.psh-mode/psh-mode/bin/psh-mode update
-      cd $old_path_update
-      unset old_path_update
-    elif [ $1 == "delete" ]; then
-      $HOME/.psh-mode/psh-mode/bin/psh-mode delete
-    else
-      $HOME/.psh-mode/psh-mode/bin/psh-mode --help
-    fi
-  else
-    if [ $VIRTUAL_ENV ]; then
-      echo "psh-mode is running..."
-    else
-      source $HOME/.psh-mode/psh-mode/bin/activate
-    fi
-  fi
-}
-"""
-
-    @property
-    def HACKERMODE_ACTIVATE_FILE_PATH(self) -> str:
-        """To get psh-mode activate file"""
-        return os.path.join(self.HACKERMODE_INSTALL_PATH, "psh-mode/bin/activate")
-
-    @property
-    def HACKERMODE_PATH(self) -> str:
-        """To get real psh-mode path"""
-        return '/'.join(os.path.abspath(__file__).split('/')[:-2])
-
-    @property
-    def HACKERMODE_BIN_PATH(self) -> str:
-        """To get psh-mode [psh-mode/bin/] directory"""
-        return os.path.join(self.HACKERMODE_PATH, "bin")
-
-    @property
-    def HACKERMODE_TOOLS_PATH(self) -> str:
-        """To get the psh-mode [psh-mode/tools/] path"""
-        return os.path.join(self.HACKERMODE_PATH, "tools")
-
-    @property
-    def HACKERMODE_INSTALL_PATH(self) -> str:
-        """To get the install path [~/.psh-mode/]"""
-        ToolPath = os.path.join(os.environ['HOME'], '.psh-mode')
-        if not os.path.isdir(ToolPath):
-            os.mkdir(ToolPath)
-        return ToolPath
-=======
     def TOOL_SHORTCUT(self) -> str:
         """PSHMode shortcut"""
         with open(os.path.join(self.REAL_TOOL_PATH, "PSHMode.shortcut"), "r") as file:
@@ -110,7 +49,6 @@ function psh-mode() {
         if not os.path.isdir(tool_path):
             os.mkdir(tool_path)
         return tool_path
->>>>>>> Stashed changes
 
     @property
     def CONFIG_PATH(self) -> str:

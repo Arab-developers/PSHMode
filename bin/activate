@@ -41,11 +41,7 @@ function exit() {
 # unset irrelevant variables
 exit nondestructive
 
-<<<<<<< Updated upstream
-# psh-mode path
-=======
 # PSHMode path
->>>>>>> Stashed changes
 _FILE_SOURCE_PATH=$(realpath "$0")
 if [[ "$_FILE_SOURCE_PATH" =~ .+activate ]]; then
   VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
@@ -53,11 +49,7 @@ elif [[ "$_FILE_SOURCE_PATH" =~ .+bash ]]; then
   _FILE_SOURCE_PATH=$(realpath "$BASH_SOURCE")
   VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
 else
-<<<<<<< Updated upstream
-  echo "# can't find psh-mode path!"
-=======
   echo "# can't find PSHMode path!"
->>>>>>> Stashed changes
   exit
 fi
 
@@ -70,11 +62,7 @@ export tiU
 export apVU
 unset _FILE_SOURCE_PATH
 
-<<<<<<< Updated upstream
-# Add psh-mode path to virtual system path
-=======
 # Add PSHMode path to virtual system path
->>>>>>> Stashed changes
 _OLD_VIRTUAL_PATH="$PATH"
 
 if [ -d $VIRTUAL_ENV/tools ]; then
@@ -92,13 +80,9 @@ fi
 
 export PATH="$VIRTUAL_ENV/bin:$PATH"
 
-<<<<<<< Updated upstream
-# prompt setting (psh-mode cmd Style) and intro
-=======
 
 
 # prompt setting (PSHMode cmd Style) and intro
->>>>>>> Stashed changes
 
 if [ -f $VIRTUAL_ENV/etc/motd ]; then
   cat $VIRTUAL_ENV/etc/motd

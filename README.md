@@ -1,14 +1,9 @@
-<<<<<<< Updated upstream
-# psh-mode
-- [Support](#support)
-=======
 # PSHMode
 
 <p>
 <a href=""><img src="https://img.shields.io/github/repo-size/Arab-developers/PSHMode?label=tool size"></a>
 </p>
 
->>>>>>> Stashed changes
 - [Install](#install)
 - [how to use?](#docs)
 
@@ -43,11 +38,7 @@ chsh -s zsh
 ```
 you need to close the terminal and open it agan to activate the last command.
 ```bash
-<<<<<<< Updated upstream
-curl https://raw.githubusercontent.com/Arab-developers/psh-mode/main/install.sh > HackerModeInstall && source HackerModeInstall
-=======
 exit
->>>>>>> Stashed changes
 ```
 ```bash
 curl https://raw.githubusercontent.com/Arab-developers/PSHMode/main/install.sh > PSHMode.install 2> .PSHMode-install.log && source PSHMode.install
@@ -65,9 +56,6 @@ sudo apt install python3 zsh -y
 ```
 
 ```bash
-<<<<<<< Updated upstream
-curl https://raw.githubusercontent.com/Arab-developers/psh-mode/main/install.sh > HackerModeInstall && source HackerModeInstall
-=======
 chsh -s $(which zsh)
 ```
 you need to close the terminal and open it agan to activate the last command.
@@ -76,30 +64,11 @@ exit
 ```
 ```bash
 curl https://raw.githubusercontent.com/Arab-developers/PSHMode/main/install.sh > PSHMode.install 2> .PSHMode-install.log && source PSHMode.install
->>>>>>> Stashed changes
 ```
 
 <br>
 <div id="docs"></div>
 
-<<<<<<< Updated upstream
-### Docs:
-How to use psh-mode?
-```shell
-# after install
-# write in terminal psh-mode
-# to run the tool
-$ psh-mode
-
-# to check psh-mode package
-$ psh-mode check
-
-# to update psh-mode and packages
-$ psh-mode update
-
-# to delete psh-mode
-$ psh-mode delete
-=======
 ### How to use?
 
 ```shell
@@ -114,5 +83,4 @@ $ PSHMode update
 
 # to delete the tool.
 $ PSHMode delete
->>>>>>> Stashed changes
 ```
