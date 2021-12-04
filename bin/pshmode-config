@@ -1,0 +1,30 @@
+#!/usr/bin/python3
+import json
+import os
+import sys
+
+sys.path.append(os.environ["VIRTUAL_ENV"])
+
+from lib.config import Config
+
+if __name__ == "__main__":
+    if not len(sys.argv) > 1:
+        os.system("readme pshmode-config")
+        exit(0)
+
+    if sys.argv[1] == "set":
+        Config.set("settings", sys.argv[2], sys.argv[3])
+    elif sys.argv[1] == "get":
+        try:
+            print(Config.get("settings", sys.argv[2]))
+        except KeyError:
+            sys.stderr.write("# Error: value not found set it first!")
+            exit(1)
+
+    elif sys.argv[1] == "show":
+        with open(Config.file, "r") as file:
+            data = json.loads(file.read())["settings"]
+        for key, value in data.items():
+            print(f"{key:16} {value:}")
+    else:
+        os.system("readme pshmode-config")

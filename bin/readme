@@ -11,7 +11,7 @@ from config import Config
 from rich import print
 
 DOCS_PATH = os.path.join(os.environ.get("VIRTUAL_ENV"), "share/docs")
-DOC_NAME = "hackermode" if len(sys.argv) <= 1 else sys.argv[1]
+DOC_NAME = "pshmode" if len(sys.argv) <= 1 else sys.argv[1]
 DOC_FILE_PATH = os.path.join(DOCS_PATH, DOC_NAME.lower() + '.xml')
 DOC_FILE_PATH_TOOLS = os.path.join(os.environ.get("VIRTUAL_ENV"), f"tools/{DOC_NAME.lower()}/README.md")
 console = Console()

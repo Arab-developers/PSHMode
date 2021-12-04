@@ -6,21 +6,11 @@ import sys
 from optparse import *
 
 
-class MacChanger():
+class MacChanger:
     """ This class is provided to change the mac address for the devices """
 
     def __init__(self):
-        self.mp = OptionParser('''\033[1;32m
- -m  --mac 	 :	the mac address you want to change to
- -i  --interface :	the interface for the mac address
- -d  --default	 :	reset the mac address to the origin
- -h  --help	 :	show this help menu
-
-Examples:
-	\033[1;35m[default interface : eth0]\033[1;32m
-	chmac -m 64:A1:B7:44:22:63 -i wlan0
-	chmac -m 64:A1:B7:44:22:63
-\033[0m					 ''')
+        self.mp = OptionParser('''''')
 
         self.mp.add_option("-m", "--mac", dest="maca", type="string", help="the mac address you want to change to")
         self.mp.add_option("-i", "--interface", dest="inter", type="string", help="the interface for the mac address")
@@ -33,14 +23,12 @@ Examples:
         self.mac = re.match(pattern, mac)
         if self.mac:
             self.mac = self.mac.group()
-            print(mac)
         else:
-            print(f'\033[1;31mInvald Mac Address | {mac}\033[0m');exit()
+            print(f'\033[1;31mInvald Mac Address | {mac}\033[0m');
+            exit()
 
     def change(self, interface="eth0"):
-        print(interface)
         i1 = subprocess.check_output(["ifconfig", interface])
-        print(i1)
         subprocess.call(["ifconfig", interface, "down"])
         subprocess.call(["ifconfig", interface, "hw", "ether", self.mac])
         subprocess.call(["ifconfig", interface, "up"])
@@ -52,7 +40,7 @@ Examples:
 
     def run(self):
         if self.options.maca == None and '-d' not in sys.argv[1:]:
-            print(self.mp.usage)
+            os.system("readme chmac")
         if '-d' in sys.argv[1:]:
             inter = self.options.inter if self.options.inter else "eth0"
             com = "ifconfig %s hw ether $(ethtool -P %s | awk '{print $3}')" % (inter, inter)

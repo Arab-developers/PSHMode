@@ -11,6 +11,10 @@ console.print(
     Panel(
         description.strip(),
         expand=True,
+<<<<<<< Updated upstream
         title="psh-mode 2.0"
+=======
+        title="PSHMode 2.0"
+>>>>>>> Stashed changes
     )
 )

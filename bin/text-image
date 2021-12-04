@@ -36,7 +36,8 @@ def inputs():
     try:
         openfile = open(image, 'rb')
     except Exception as e:
-        print(e);exit()
+        print(e);
+        exit()
     width = proinput('Width')
     invert = proinput('Invert[$LRED]-[$LBLUE]([$NORMAL]1[$LRED]/[$NORMAL]0[$LBLUE])')
     contrast = proinput('Contrast[$LRED]-[$LBLUE]([$NORMAL]1[$LRED]/[$NORMAL]0[$LBLUE])')

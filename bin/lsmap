@@ -42,7 +42,7 @@ def walk_directory(directory: pathlib.Path, tree: Tree) -> None:
 try:
     directory = os.path.abspath(sys.argv[1])
 except IndexError:
-    print("[b]USAGE:[/]\n  lsmap <DIRECTORY>")
+    os.system("readme lsmap")
 else:
     tree = Tree(
         f":open_file_folder: [link file://{directory}]{directory}",

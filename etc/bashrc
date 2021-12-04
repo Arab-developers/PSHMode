@@ -1,0 +1,49 @@
+# This file is running before loading the system shell.
+# You can put anything here.
+
+# The VIRTUAL_ENV variable give you the PSHMode path.
+# You can use it to run files in etc folder.
+
+# shortcuts
+alias c="clear"
+alias l="ls -CF"
+alias la="ls -a"
+alias gc="git clone"
+alias p3i="pip3 install"
+alias p2i="pip2 install"
+alias pi="pip install"
+alias cdSD="cd /sdcard"
+alias cdDO="cd /sdcard/Download"
+
+# colors
+if [[ $BASH_VERSION != "" ]]; then
+  LIGHT_RED="\[\033[1;31m\]"
+  BLUE="\[\033[0;34m\]"
+  LIGHT_BLUE="\[\033[1;34m\]"
+  END_COLOR="\[\033[0m\]"
+  END_BOLD=""
+  LIVE_PATH="\W"
+else
+  LIGHT_RED="%B%{%F{red}%}"
+  BLUE="%{%F{blue}%}"
+  LIGHT_BLUE="%B%{%F{blue}%}"
+  END_COLOR="%{%f%}"
+  END_BOLD="%{%b%}"
+  LIVE_PATH="%1d"
+fi
+
+PROMPT_USERNAME=$(pshmode-config get PROMPT_TEXT) 2> /dev/null
+if [[ $PROMPT_USERNAME == "" ]]; then
+  PROMPT_USERNAME="PSHMode"
+fi
+
+# PSHMode prompt
+PS1="${BLUE}┌──${LIGHT_BLUE}(${END_BOLD}${LIGHT_RED}$PROMPT_USERNAME${LIGHT_BLUE})${END_BOLD}${BLUE}-${LIGHT_BLUE}[${END_BOLD}${END_COLOR}${LIVE_PATH}${LIGHT_BLUE}]${END_BOLD}"$'\n'"${BLUE}└─${LIGHT_RED}\$${END_BOLD}${END_COLOR} "
+# ┌──(PSHMode)-[home]
+# └─$
+
+unset LIGHT_RED BLUE LIGHT_BLUE END_COLOR END_BOLD LIVE_PATH
+
+
+# PSHMode intro
+# python3 $VIRTUAL_ENV/etc/intro.py

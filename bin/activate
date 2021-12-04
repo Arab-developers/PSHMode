@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+PLATFORM=$(python3 -c "import sys,os;print('win' if sys.platform in ('win32', 'cygwin') else 'macosx' if sys.platform == 'darwin' else 'termux' if os.environ.get('PREFIX') != None else 'linux' if sys.platform.startswith('linux') or sys.platform.startswith('freebsd') else 'unknown')")
+
 function exit() {
   # reset old environment variables
   if [ -n "${_OLD_VIRTUAL_PATH:-}" ]; then
@@ -22,10 +24,12 @@ function exit() {
     export PS1
     unset _OLD_VIRTUAL_PS1
   fi
-
-  unset VIRTUAL_ENV
-  unset tiU
-  unset apVU
+  if [[ $PLATFORM == "termux" && $ZSH_VERSION != "" ]]; then
+    ZSH_AUTOSUGGEST_STRATEGY=()
+    ZSH_HIGHLIGHT_MAXLENGTH=0
+  fi
+  source "$VIRTUAL_ENV/etc/onexit.sh" &> /dev/null
+  unset VIRTUAL_ENV tiU apVU
 
   if [ ! "${1:-}" = "nondestructive" ]; then
     # Self destruct!
@@ -37,7 +41,11 @@ function exit() {
 # unset irrelevant variables
 exit nondestructive
 
+<<<<<<< Updated upstream
 # psh-mode path
+=======
+# PSHMode path
+>>>>>>> Stashed changes
 _FILE_SOURCE_PATH=$(realpath "$0")
 if [[ "$_FILE_SOURCE_PATH" =~ .+activate ]]; then
   VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
@@ -45,18 +53,28 @@ elif [[ "$_FILE_SOURCE_PATH" =~ .+bash ]]; then
   _FILE_SOURCE_PATH=$(realpath "$BASH_SOURCE")
   VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
 else
+<<<<<<< Updated upstream
   echo "# can't find psh-mode path!"
+=======
+  echo "# can't find PSHMode path!"
+>>>>>>> Stashed changes
   exit
 fi
+
 VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
 apVU=$($VIRTUAL_ENV/lib/shell apVU) &>/dev/null
 tiU=$($VIRTUAL_ENV/lib/shell tiU) &>/dev/null
+
 export VIRTUAL_ENV
 export tiU
 export apVU
 unset _FILE_SOURCE_PATH
 
+<<<<<<< Updated upstream
 # Add psh-mode path to virtual system path
+=======
+# Add PSHMode path to virtual system path
+>>>>>>> Stashed changes
 _OLD_VIRTUAL_PATH="$PATH"
 
 if [ -d $VIRTUAL_ENV/tools ]; then
@@ -66,32 +84,30 @@ if [ -d $VIRTUAL_ENV/tools ]; then
     fi
   done
 fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
 export PATH="$VIRTUAL_ENV/bin:$PATH"
 
+<<<<<<< Updated upstream
 # prompt setting (psh-mode cmd Style) and intro
+=======
+
+
+# prompt setting (PSHMode cmd Style) and intro
+>>>>>>> Stashed changes
 
 if [ -f $VIRTUAL_ENV/etc/motd ]; then
   cat $VIRTUAL_ENV/etc/motd
 fi
 
 if [[ $tiU =~ tiU ]]; then
-  if [[ -z "${VIRTUAL_ENV_DISABLE_PROMPT:-}" && "$0" =~ bash$ ]]; then
-    if [ -d /data/data/com.termux/files/home ]; then
-      _OLD_VIRTUAL_PS1=$PS1
-      source "$VIRTUAL_ENV/etc/bash.bashrc"
-      export PS1
-    else
-      _OLD_VIRTUAL_PS1=$PS1
-      source "$VIRTUAL_ENV/etc/bash.bashrc"
-      PS1=$_OLD_VIRTUAL_PS1
-      export PS1
-    fi
-  else
-    _OLD_VIRTUAL_PS1=$PS1
-    source "$VIRTUAL_ENV/etc/bash.bashrc"
-    PS1=$_OLD_VIRTUAL_PS1
-    export PS1
-  fi
+  _OLD_VIRTUAL_PS1=$PS1
+  source "$VIRTUAL_ENV/etc/bashrc"
+  export PS1
 else
   python3 -c "print(*'''$tiU'''.split('#'),sep='#')"
   exit
@@ -104,6 +120,25 @@ if ! [[ $apVU =~ apVU ]]; then
   return
 fi
 
+if [[ $PLATFORM == "termux" ]]; then
+  # History configurations
+  HISTFILE=~/.zsh_history
+  HISTSIZE=1000
+  SAVEHIST=2000
+  setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+  setopt hist_ignore_dups       # ignore duplicated commands history list
+  setopt hist_ignore_space      # ignore commands that start with space
+  setopt hist_verify            # show command with history expansion to user before running it
+  #setopt share_history         # share command history data
+
+  # force zsh to show the complete history
+  alias history="history 0"
+
+  unset ZSH_HIGHLIGHT_MAXLENGTH
+  source "$VIRTUAL_ENV/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  source "$VIRTUAL_ENV/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  ZSH_AUTOSUGGEST_STRATEGY=(history)
+fi
 # This should detect bash and zsh, which have a hash command that must
 # be called to get it to forget past commands.  Without forgetting
 # past commands the $PATH changes we made may not be respected

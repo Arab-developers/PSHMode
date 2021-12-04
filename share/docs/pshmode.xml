@@ -1,0 +1,36 @@
+<title>psh-mode</title>
+
+
+<section title="USAGE">
+    <line command="">&lt;COMMAND&gt;</line>
+</section>
+
+<section title="COMMANDS">
+    <line command="run">تشغيل أي ملف</line>
+    <line command="del">حذف الملفات أو المجلدات</line>
+    <line command="size">حساب حجم الملف أو المجلد</line>
+    <line command="lsmap">إظهار الملفات والمجلدات كشجرة</line>
+    <line command="findall">للبحث عن الملفات والمجلدات</line>
+    <line command="lib-installer">مثبت مكتبات بيثون</line>
+    <line command="ccat">أظهر الكود مع الألوان</line>
+    <line command="pyprivate">تشفير أي ملف بايثون</line>
+    <line command="chmac">تغيير عنوان ماك</line>
+    <line command="network-info">لإظهار معلومات الشبكة</line>
+    <line command="text-image">تحويل صورة إلى نص</line>
+    <line command="decode">لفك تشفير أي ملف بايثون</line>
+    <line command="chash">تحقق من نوع التشفير</line>
+    <line command="bstrings">سحب النصوص من الملفات المشفره</line>
+    <line command="exit">أوقف الأداة</line>
+</section>
+
+<section title="SHORTCUTS">
+    <line command="c">clear</line>
+    <line command="l">ls -CF</line>
+    <line command="la">ls -a</line>
+    <line command="gc">git clone</line>
+    <line command="p3i">pip3 install</line>
+    <line command="p2i">pip2 install</line>
+    <line command="pi">pip install</line>
+    <line command="cdSD">cd /sdcard</line>
+    <line command="cdDO">cd /sdcard/Download</line>
+</section>

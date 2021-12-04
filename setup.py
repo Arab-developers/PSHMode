@@ -1,10 +1,11 @@
 import os
+import sys
 import json
 import shutil
 
+sys.path.append(__file__.rsplit("/", 1)[0])
 from lib.config import Config
-
-from lib.variables import Variables, HACKERMODE_FOLDER_NAME
+from lib.variables import Variables, TOOL_NAME
 
 RED = '\033[1;31m'
 GREEN = '\033[1;32m'
@@ -13,7 +14,7 @@ NORMAL = '\033[0m'
 UNDERLINE = '\033[4m'
 BOLD = '\033[1m'
 
-with open(os.path.join(Variables.HACKERMODE_PATH, 'packages.json')) as fp:
+with open(os.path.join(Variables.REAL_TOOL_PATH, 'packages.json')) as fp:
     INSTALL_DATA = json.load(fp)
 
 
@@ -40,7 +41,7 @@ class HackerModeInstaller:
             color = RED if is_base else YELLOW
             print(f'{NORMAL}[{color}{"✗" if is_base else "!"}{NORMAL}] {color}{default_message}{NORMAL}')
 
-    def check(self, show_output=True) -> dict:
+    def check(self, show_output=True, install_message=False) -> dict:
         """this
         function check packages and modules
         and return all packages that not installed.
@@ -71,33 +72,30 @@ class HackerModeInstaller:
                 packages.append(package)
                 self.failed_message(package, show=show_output)
 
+        if show_output and install_message:
+            if os.path.isdir(Variables.TOOL_INSTALL_PATH):
+                if all([modules, packages]):
+                    print(f"# {YELLOW}PSHMode installed successfully but there is some issues.{NORMAL}")
+                else:
+                    print(f"# {GREEN}PSHMode installed successfully.{NORMAL}")
+            else:
+                self.delete(show_message=False)
+                print(f"# {RED}Installed failed!.{NORMAL}")
+
         return {"packages": packages, "modules": modules}
 
     def install(self):
-        # check platforme
-        if not Variables.PLATFORME in ('termux', 'linux'):
-            if Variables.PLATFORME == 'unknown':
-                print("# The tool could not recognize the system!")
-                print("# Do You want to continue anyway?")
-                while True:
-                    if input('# [Y/N]: ').lower() == 'y':
-                        break
-                    else:
-                        print('# good bye :D')
-                        return
-            else:
-                print(f"# The tool does not support {Variables.PLATFORME}")
-                print('# good bye :D')
-                return
-
         # install packages
+        logout = "~/.PSHMode-install.log"
         need_to_install = self.check(show_output=False)
         for package in need_to_install["packages"]:
             for command in INSTALL_DATA["PACKAGES"][package][Variables.PLATFORME]:
-                os.system(command)
+                print(f"Installing {package} ...")
+                os.system(f"{command} 2>> {logout}")
 
         # install modules
         for module in need_to_install["modules"]:
+<<<<<<< Updated upstream
             os.system(f"pip3 install {module}")
 
         # move psh-mode to install path
@@ -131,22 +129,48 @@ class HackerModeInstaller:
             os.system(
                 f'curl https://raw.githubusercontent.com/Arab-developers/psh-mode/future/install.sh > HackerModeInstall && bash HackerModeInstall')
             print(f'# {GREEN}psh-mode updated successfully...{NORMAL}')
+=======
+            print(f"Installing {module} ...")
+            os.system(f"pip3 install {module} 2>> {logout}")
+
+        # setup PSHMode tools
+        self.install_tools_packages()
+
+        # to check
+        self.check(install_message=True)
+
+    def update(self):
+        if not Config.get('actions', 'DEBUG', cast=bool, default=False):
+            hackermode_command_line_path = os.environ.get("_").split("bin/")[0] + "bin/PSHMode"
+            if os.path.exists(hackermode_command_line_path):
+                os.remove(hackermode_command_line_path)
+            os.system(
+                f'curl https://raw.githubusercontent.com/Arab-developers/PSHMode/main/install.sh > PSHMode.install 2> .PSHMode-install.log && bash PSHMode.install')
+>>>>>>> Stashed changes
         else:
             print("# can't update in the DEUBG mode!")
 
     def add_shortcut(self):
+<<<<<<< Updated upstream
         # add psh-mode shortcut...
+=======
+        # add PSHMode shortcut...
+>>>>>>> Stashed changes
         try:
             with open(Variables.BASHRIC_FILE_PATH, "r") as f:
                 data = f.read()
-            if data.find(Variables.HACKERMODE_SHORTCUT.strip()) == -1:
+            if data.find(Variables.TOOL_SHORTCUT.strip()) == -1:
                 with open(Variables.BASHRIC_FILE_PATH, "w") as f:
-                    f.write(data + Variables.HACKERMODE_SHORTCUT)
+                    f.write(data + Variables.TOOL_SHORTCUT)
         except PermissionError:
+<<<<<<< Updated upstream
             print(NORMAL + "# add psh-mode shortcut:")
             print(f"# '{YELLOW}{Variables.HACKERMODE_SHORTCUT}{NORMAL}'")
             print("# to this path:")
             print("# " + Variables.HACKERMODE_BIN_PATH)
+=======
+            print(f"# {RED}can't add the tool shortcut!{NORMAL}")
+>>>>>>> Stashed changes
 
     def delete(self, show_message=True):
         if show_message:
@@ -154,41 +178,72 @@ class HackerModeInstaller:
         else:
             status = "y"
         if status in ("y", "yes", "ok", "yep"):
+<<<<<<< Updated upstream
             bin_path = os.path.join(os.environ["SHELL"].split("/bin/")[0], "/bin/psh-mode")
             tool_path = os.path.join(os.environ["HOME"], ".psh-mode")
             if os.path.exists(bin_path):
                 os.remove(bin_path)
+=======
+            tool_path = os.path.join(os.environ["HOME"], ".PSHMode")
+            errors = 0
+>>>>>>> Stashed changes
             if os.path.exists(tool_path):
-                shutil.rmtree(tool_path)
                 try:
                     with open(Variables.BASHRIC_FILE_PATH, "r") as f:
                         data = f.read()
-                    if data.find(Variables.HACKERMODE_SHORTCUT.strip()) != -1:
+                    if data.find(Variables.TOOL_SHORTCUT.strip()) != -1:
                         with open(Variables.BASHRIC_FILE_PATH, "w") as f:
-                            f.write(data.replace(Variables.HACKERMODE_SHORTCUT, ""))
+                            f.write(data.replace(Variables.TOOL_SHORTCUT, ""))
                 except PermissionError:
                     if show_message:
+<<<<<<< Updated upstream
                         print("# cannot remove psh-mode shortcut!")
             if show_message:
                 print("# The deletion was successful...")
+=======
+                        errors += 1
+                        print("# cannot remove PSHMode shortcut!")
+                try:
+                    shutil.rmtree(tool_path)
+                except Exception as e:
+                    errors += 1
+                    print(e)
+
+            if errors:
+                exit(1)
+            else:
+                if show_message:
+                    print("# The deletion was successful...")
+>>>>>>> Stashed changes
 
     def install_tools_packages(self):
         # compile shell file
         old_path = os.getcwd()
+<<<<<<< Updated upstream
         os.chdir(os.path.join(os.environ.get("HOME"), ".psh-mode/psh-mode/lib"))
+=======
+        os.chdir(os.path.join(Variables.TOOL_INSTALL_PATH, "lib"))
+>>>>>>> Stashed changes
         os.system("bash setup.sh")
         os.chdir(old_path)
 
         # install tools packages
+<<<<<<< Updated upstream
         tools_path = os.path.join(os.environ.get("HOME"), ".psh-mode/psh-mode/tools")
         for root, dirs, files in os.walk(tools_path):
+=======
+        def run_setup(root, dir):
+            old_path = os.getcwd()
+            os.chdir(os.path.join(root, dir))
+            os.system("bash setup.sh")
+            os.chdir(old_path)
+
+        for root, dirs, files in os.walk(Variables.TOOLS_PATH):
+>>>>>>> Stashed changes
             for dir in dirs:
                 if os.path.exists(os.path.join(root, dir, "setup.sh")):
-                    print(f"installing {dir} packages:")
-                    old_path = os.getcwd()
-                    os.chdir(os.path.join(root, dir))
-                    os.system("bash setup.sh")
-                    os.chdir(old_path)
+                    print(f"Installing {dir} packages...")
+                    run_setup(root, dir)
 
 
 if __name__ == "__main__":

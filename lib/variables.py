@@ -2,27 +2,30 @@
 import os
 import sys
 
+<<<<<<< Updated upstream
 HACKERMODE_FOLDER_NAME = "psh-mode"
+=======
+TOOL_NAME = "PSHMode"
+>>>>>>> Stashed changes
 
 
 class Variables:
     @property
     def BASHRIC_FILE_PATH(self) -> str:
-        if (shell := os.environ.get('SHELL')):
-            if shell.endswith("bash"):
-                path = os.path.join(shell.split("/bin/")[0], "etc/bash.bashrc")
-                if not os.path.exists(path):
-                    path = "/etc/bash.bashrc"
-            elif shell.endswith("zsh"):
-                path = os.path.join(shell.split("/bin/")[0], "etc/zsh/zshrc")
-                if not os.path.exists(path):
-                    path = "/etc/zsh/zshrc"
-                    if not os.path.exists(path):
-                        path = os.path.join(shell.split("/bin/")[0], "etc/zshrc")
+        if self.PLATFORME == "termux":
+            return os.environ.get("PREFIX") + "/etc/zshrc"
 
+        shell = os.environ.get('SHELL')
+        if shell.endswith("bash"):
+            path = "/etc/bash.bashrc"
+        elif shell.endswith("zsh"):
+            path = "/etc/zsh/zshrc"
+            if not os.path.exists(path):
+                path = "/etc/zshrc"
         return path
 
     @property
+<<<<<<< Updated upstream
     def HACKERMODE_SHORTCUT(self) -> str:
         """psh-mode shortcut"""
         return """
@@ -78,9 +81,39 @@ function psh-mode() {
         if not os.path.isdir(ToolPath):
             os.mkdir(ToolPath)
         return ToolPath
+=======
+    def TOOL_SHORTCUT(self) -> str:
+        """PSHMode shortcut"""
+        with open(os.path.join(self.REAL_TOOL_PATH, "PSHMode.shortcut"), "r") as file:
+            data = file.read()
+        return data
 
     @property
-    def HACKERMODE_CONFIG_PATH(self) -> str:
+    def ACTIVATE_FILE_PATH(self) -> str:
+        """To get PSHMode activate file"""
+        return os.path.join(self.TOOL_INSTALL_PATH, "PSHMode/bin/activate")
+
+    @property
+    def REAL_TOOL_PATH(self) -> str:
+        """To get real PSHMode path"""
+        return '/'.join(os.path.abspath(__file__).split('/')[:-2])
+
+    @property
+    def TOOLS_PATH(self) -> str:
+        """To get the PSHMode [PSHMode/tools/] path"""
+        return os.path.join(self.REAL_TOOL_PATH, "tools")
+
+    @property
+    def TOOL_INSTALL_PATH(self) -> str:
+        """To get the installation path [~/.PSHMode/]"""
+        tool_path = os.path.join(os.environ['HOME'], '.PSHMode')
+        if not os.path.isdir(tool_path):
+            os.mkdir(tool_path)
+        return tool_path
+>>>>>>> Stashed changes
+
+    @property
+    def CONFIG_PATH(self) -> str:
         """To get the config path [~/.config/]"""
         path = os.path.join(os.environ['HOME'], '.config')
         if not os.path.isdir(path):
@@ -96,7 +129,7 @@ function psh-mode() {
         elif sys.platform == 'darwin':
             return 'macosx'
 
-        elif os.environ.get('PREFIX') != None:
+        elif os.environ.get('PREFIX') is not None:
             return 'termux'
 
         elif sys.platform.startswith('linux') or sys.platform.startswith('freebsd'):

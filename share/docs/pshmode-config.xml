@@ -1,0 +1,17 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;command&gt; &lt;option&gt;</line>
+</section>
+
+<section title="commands">
+        <line command="set">to set or overwrite data.</line>
+        <line command="get">to get data.</line>
+        <line command="show">to show all options and values.</line>
+</section>
+
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">set PROMPT_TEXT "MyName"</line>
+        <line command="{{ TOOL_NAME }}">get PROMPT_TEXT</line>
+        <line command="{{ TOOL_NAME }}">show</line>
+</section>

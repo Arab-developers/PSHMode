@@ -8,22 +8,6 @@ class Del:
 
     def __init__(self):
         self.base = os.path.join(os.environ['HOME'], ".trash")
-        self.usage = f'''
-\033[1;32m
-trash path 	:	{self.base}
-options:
-	-h 	:	select hidden files/dirs
-	-c	:	clear the cache of the trash file
-	--help	:	show this menu
-Examples:
-	del file.txt data.py main.css
-	del folder1
-	del *
-	del -h *
-	del -h -c
-	del -c
-\033[0m			'''
-        # self.base = os.path.join(os.environ['HOME'],".trash")
         if os.path.exists(self.base):
             pass
         else:
@@ -61,7 +45,7 @@ Examples:
             print(e)
 
     def main(self):
-        if len(self.arg2) < 1: print(self.usage)
+        if len(self.arg2) < 1: os.system("readme del")
         if '-h' in self.arg2: self.hide = 1
         if '-c' in self.arg2: self.clear_cache()
         for a in self.arg1:

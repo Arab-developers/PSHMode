@@ -1,6 +1,7 @@
-import sys
-from setup import HackerModeInstaller
+import os
+import runpy
 
+<<<<<<< Updated upstream
 help_msg = """
 \033[1mUSAGE:\033[0m
   python3 -B psh-mode/ <command>
@@ -23,3 +24,6 @@ if __name__ == "__main__":
             print(e)
     else:
         print(help_msg)
+=======
+runpy.run_path(os.path.join(os.path.abspath(__file__).rsplit("/", 1)[0], "bin/PSHMode"))
+>>>>>>> Stashed changes

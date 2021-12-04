@@ -1,11 +1,10 @@
 {
-    "actions": {
-        "IS_INSTALLED":false,
-        "DEBUG":false
-    },
-    "settings":{
-        "ARABIC_RESHAPER":false,
-        "PROMPT": 0,
-        "LANGUAGE": "ar"
-    }
+  "actions": {
+    "DEBUG": false
+  },
+  "settings": {
+    "ARABIC_RESHAPER": false,
+    "PROMPT_TEXT": "test",
+    "LANGUAGE": "ar"
+  }
 }
