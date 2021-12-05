@@ -1,7 +1,7 @@
 # coding: utf-8
 import os
 import sys
-
+import platform
 TOOL_NAME = "PSHMode"
 
 
@@ -69,6 +69,9 @@ class Variables:
 
         elif os.environ.get('PREFIX') is not None:
             return 'termux'
+
+        elif platform.release().endswith("ish"):
+            return "ish shell"
 
         elif sys.platform.startswith('linux') or sys.platform.startswith('freebsd'):
             return 'linux'

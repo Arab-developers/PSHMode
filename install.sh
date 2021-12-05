@@ -31,7 +31,7 @@ function download_PSHMode() {
 }
 
 if [[ $PLATFORM != "unknown" ]]; then
-  echo -e "\n\nStart installing for ( \033[1;32m$PLATFORM\033[0m )"
+  echo -e "Start installing for ( \033[1;32m$PLATFORM\033[0m )"
 fi
 
 # Linux installation...
@@ -75,7 +75,8 @@ elif [[ $PLATFORM == "termux" ]]; then
 
   # Start the installation
   python3 -B .PSHMode install
-
+else
+  echo "# No support for '$PLATFORM'!"
 fi
 
 # Remove variables from the global namespace.
