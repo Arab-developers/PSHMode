@@ -34,3 +34,15 @@
     <line command="cdSD">cd /sdcard</line>
     <line command="cdDO">cd /sdcard/Download</line>
 </section>
+
+<section title="SYSTEM">
+    <line command="pshmode-config">للتعديل في متغيرات النظام</line>
+    <line command="exit">لإيقاف الأداة</line>
+</section>
+
+<section title="PSHMODE">
+    <line command="PSHMode">للتشغيل</line>
+    <line command="PSHMode update">للتحديث</line>
+    <line command="PSHMode check">للتحقق من البكجات و المكاتب المثبتة</line>
+    <line command="PSHMode delete">لمسح الأداة كلياَ من النظام</line>
+</section>
