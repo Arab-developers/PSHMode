@@ -3,7 +3,7 @@ LOG_FILE=".PSHMode-install.log"
 echo "" >$LOG_FILE
 
 # Get the platform.
-PLATFORM=$(python3 -c "import sys, os;print('win' if sys.platform in ('win32', 'cygwin') else 'macosx' if sys.platform == 'darwin' else 'termux' if os.environ.get('PREFIX') != None else 'linux' if sys.platform.startswith('linux') or sys.platform.startswith('freebsd') else 'unknown')")
+PLATFORM=$(python3 -c "import sys, os;print('win' if sys.platform in ('win32', 'cygwin') else 'macosx' if sys.platform == 'darwin' else 'termux' if os.environ.get('PREFIX') != None else 'ish shell' if platform.release().endswith('ish') else 'linux' if sys.platform.startswith('linux') or sys.platform.startswith('freebsd') else 'unknown')")
 
 # Remove old version from the tool.
 python3 -c 'import subprocess;subprocess.run(["bash", "-i", "-c", "HackerMode delete"], stdout=subprocess.PIPE, text=True, input="y")' &> /dev/null
@@ -74,6 +74,21 @@ elif [[ $PLATFORM == "termux" ]]; then
   fi
 
   # Start the installation
+  python3 -B .PSHMode install
+
+elif [[ $PLATFORM == "termux" ]]; then
+  # Install packages...
+  apk update
+  apk add python3
+  apk add py3-pip
+  for PKG in ${PSHMODE_PACKAGES[*]}; do
+    apk add "$PKG"
+  done
+
+  # Download the tool.
+  download_PSHMode
+  touch ~/.zshrc
+  python3 -B .PSHMode add_shortcut
   python3 -B .PSHMode install
 else
   echo "# No support for '$PLATFORM'!"

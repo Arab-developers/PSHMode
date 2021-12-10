@@ -10,15 +10,17 @@ class Variables:
     def BASHRIC_FILE_PATH(self) -> str:
         if self.PLATFORME == "termux":
             return os.environ.get("PREFIX") + "/etc/zshrc"
-
-        shell = os.environ.get('SHELL')
-        if shell.endswith("bash"):
-            path = "/etc/bash.bashrc"
-        elif shell.endswith("zsh"):
-            path = "/etc/zsh/zshrc"
-            if not os.path.exists(path):
-                path = "/etc/zshrc"
-        return path
+        elif self.PLATFORME == "ish shell":
+            return os.environ.get("HOME") + "/.zshrc"
+        else:
+            shell = os.environ.get('SHELL')
+            if shell.endswith("bash"):
+                path = "/etc/bash.bashrc"
+            elif shell.endswith("zsh"):
+                path = "/etc/zsh/zshrc"
+                if not os.path.exists(path):
+                    path = "/etc/zshrc"
+            return path
 
     @property
     def TOOL_SHORTCUT(self) -> str:
