@@ -160,14 +160,14 @@ class HackerModeInstaller:
         # compile shell file
         old_path = os.getcwd()
         os.chdir(os.path.join(Variables.TOOL_INSTALL_PATH, "lib"))
-        os.system("bash setup.sh")
+        os.system("zsh setup.sh")
         os.chdir(old_path)
 
         # install tools packages
         def run_setup(root, dir):
             old_path = os.getcwd()
             os.chdir(os.path.join(root, dir))
-            os.system("bash setup.sh")
+            os.system("zsh setup.sh")
             os.chdir(old_path)
 
         for root, dirs, files in os.walk(Variables.TOOLS_PATH):
