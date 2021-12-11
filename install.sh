@@ -76,7 +76,7 @@ elif [[ $PLATFORM == "termux" ]]; then
   # Start the installation
   python3 -B .PSHMode install
 
-elif [[ $PLATFORM == "termux" ]]; then
+elif [[ $PLATFORM == "ish shell" ]]; then
   # Install packages...
   apk update
   apk add python3
@@ -85,9 +85,24 @@ elif [[ $PLATFORM == "termux" ]]; then
     apk add "$PKG"
   done
 
+  # Add zshrc file.
+  if ! [[ -f  ~/.zshrc ]]; then
+    touch ~/.zshrc
+    echo "PS1='%m:%~# '" >> ~/.zshrc
+  fi
+
+  # Add include files to the system.
+  if ! [[ -f /usr/include/python3.8/Python.h ]]; then
+    wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tar.xz
+    xz -d Python-3.8.10.tar.xz
+    tar -xf Python-3.8.10.tar
+    rm -f Python-3.8.10.tar
+    mv Python-3.8.10/Include/* /usr/include/python3.8/
+    rm -rif Python-3.8.10
+  fi
+
   # Download the tool.
   download_PSHMode
-  touch ~/.zshrc
   python3 -B .PSHMode add_shortcut
   python3 -B .PSHMode install
 else
