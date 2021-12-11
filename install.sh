@@ -95,9 +95,8 @@ elif [[ "$PLATFORM" == "ish shell" ]]; then
   # Add include files to the system.
   if ! [[ -f /usr/include/python3.8/Python.h ]]; then
     wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tar.xz
-    xz -d Python-3.8.10.tar.xz
-    tar -xf Python-3.8.10.tar
-    rm -f Python-3.8.10.tar
+    tar -xvf Python-3.8.10.tar.xz Python-3.8.10/Include
+    rm -f Python-3.8.10.tar.xz
     mv Python-3.8.10/Include/* /usr/include/python3.8/
     rm -rif Python-3.8.10
   fi
