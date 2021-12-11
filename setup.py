@@ -110,7 +110,7 @@ class HackerModeInstaller:
             if os.path.exists(hackermode_command_line_path):
                 os.remove(hackermode_command_line_path)
             os.system(
-                f'curl https://raw.githubusercontent.com/Arab-developers/PSHMode/main/install.sh > PSHMode.install 2> .PSHMode-install.log && zsh PSHMode.install')
+                f'curl https://raw.githubusercontent.com/Arab-developers/PSHMode/main/install.sh > PSHMode.install 2> .PSHMode-install.log && {Variables.SHELL_COMMAND} PSHMode.install')
         else:
             print("# can't update in the DEUBG mode!")
 
@@ -160,14 +160,14 @@ class HackerModeInstaller:
         # compile shell file
         old_path = os.getcwd()
         os.chdir(os.path.join(Variables.TOOL_INSTALL_PATH, "lib"))
-        os.system("zsh setup.sh")
+        os.system(f"{Variables.SHELL_COMMAND} setup.sh")
         os.chdir(old_path)
 
         # install tools packages
         def run_setup(root, dir):
             old_path = os.getcwd()
             os.chdir(os.path.join(root, dir))
-            os.system("zsh setup.sh")
+            os.system(f"{Variables.SHELL_COMMAND} setup.sh")
             os.chdir(old_path)
 
         for root, dirs, files in os.walk(Variables.TOOLS_PATH):

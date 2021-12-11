@@ -79,6 +79,10 @@ class Variables:
             return 'linux'
         return 'unknown'
 
+    @property
+    def SHELL_COMMAND(self):
+        return "sh" if self.PLATFORME == "ish shell" else "bash"
+
 
 Variables = Variables()
 

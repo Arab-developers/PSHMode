@@ -35,7 +35,7 @@ if [[ $PLATFORM != "unknown" ]]; then
 fi
 
 # Linux installation...
-if [[ $PLATFORM == "linux" ]]; then
+if [[ "$PLATFORM" == "linux" ]]; then
   # Install packages...
   sudo apt update -y
   sudo apt install python3 -y
@@ -50,7 +50,7 @@ if [[ $PLATFORM == "linux" ]]; then
   python3 -B .PSHMode install
 
 # Termux installation...
-elif [[ $PLATFORM == "termux" ]]; then
+elif [[ "$PLATFORM" == "termux" ]]; then
   # Install packages...
   pkg update -y
   pkg install python -y
@@ -76,10 +76,11 @@ elif [[ $PLATFORM == "termux" ]]; then
   # Start the installation
   python3 -B .PSHMode install
 
-elif [[ $PLATFORM == "ish shell" ]]; then
+elif [[ "$PLATFORM" == "ish shell" ]]; then
   # Install packages...
   apk update
   apk add python3
+  apk add musl-dev
   apk add py3-pip
   for PKG in ${PSHMODE_PACKAGES[*]}; do
     apk add "$PKG"
