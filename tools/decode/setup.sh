@@ -10,12 +10,15 @@ PLATFORM=$(python3 -c "import sys, os, platform;print('win' if sys.platform in (
 mkdir "bin" &>/dev/null
 if [[ "$PLATFORM" == "ish shell" ]]; then
   FILE_NAME="decode"
+  echo "compile $FILE_NAME"
   gcc -Os -I $PREFIX/include/python$VERSION -o bin/$FILE_NAME $FILE_NAME.c /usr/lib/libpython3.8.so.1.0 -lpthread -lm -lutil -ldl
 
   FILE_NAME="chash"
+  echo "compile $FILE_NAME"
   gcc -Os -I $PREFIX/include/python$VERSION -o bin/$FILE_NAME $FILE_NAME.c /usr/lib/libpython3.8.so.1.0 -lpthread -lm -lutil -ldl
 
   FILE_NAME="bstrings"
+  echo "compile $FILE_NAME"
   gcc -Os -I $PREFIX/include/python$VERSION -o bin/$FILE_NAME $FILE_NAME.c /usr/lib/libpython3.8.so.1.0 -lpthread -lm -lutil -ldl
 
 else
