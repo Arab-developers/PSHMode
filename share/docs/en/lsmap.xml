@@ -1,0 +1,10 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;folder&gt;</line>
+</section>
+
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">myfolder</line>
+        <line command="{{ TOOL_NAME }}">.</line>
+</section>

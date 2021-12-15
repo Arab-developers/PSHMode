@@ -1,9 +1,7 @@
 <title>del</title>
 
 <section title="usage">
-	<line command="del -h -c">تنظيف السلة من جميع المستندات</line>
-	<line command="del -c">تنظيف السلة مع ترك المستندات المخفية</line>
-	<line command="del -h *">حذف جميع المستندات</line>
+	<line command="del">&lt;commands&gt;</line>
 </section>
 
 <section title="commands">
@@ -15,4 +13,7 @@
 <section title="examples">
 	<line command="del">file.py</line>
 	<line command="del">folder</line>
+	<line command="del">-h -c</line>
+	<line command="del">-c</line>
+	<line command="del">-h *</line>
 </section>

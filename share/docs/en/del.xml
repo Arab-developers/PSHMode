@@ -1,0 +1,19 @@
+<title>del</title>
+
+<section title="usage">
+	<line command="del">&lt;commands&gt;</line>
+</section>
+
+<section title="commands">
+	<line command="-h">Specify hidden documents</line>
+	<line command="-c">Clean the cart from temporary files</line>
+	<line command=" *">Delete all documents in the current path</line>
+</section>
+
+<section title="examples">
+	<line command="del">file.py</line>
+	<line command="del">folder</line>
+	<line command="del">-h -c</line>
+	<line command="del">-c</line>
+	<line command="del">-h *</line>
+</section>

@@ -1,4 +1,4 @@
-<title>HackerMode</title>
+<title>PSHMode</title>
 
 
 <section title="USAGE">
@@ -11,7 +11,6 @@
     <line command="size">حساب حجم الملف أو المجلد</line>
     <line command="lsmap">إظهار الملفات والمجلدات كشجرة</line>
     <line command="findall">للبحث عن الملفات والمجلدات</line>
-    <line command="lib-installer">مثبت مكتبات بيثون</line>
     <line command="ccat">أظهر الكود مع الألوان</line>
     <line command="pyprivate">تشفير أي ملف بايثون</line>
     <line command="chmac">تغيير عنوان ماك</line>
@@ -19,8 +18,8 @@
     <line command="text-image">تحويل صورة إلى نص</line>
     <line command="decode">لفك تشفير أي ملف بايثون</line>
     <line command="chash">تحقق من نوع التشفير</line>
+    <line command="plist">لإنشاء كلمات مرور</line>
     <line command="bstrings">سحب النصوص من الملفات المشفره</line>
-    <line command="exit">أوقف الأداة</line>
 </section>
 
 <section title="SHORTCUTS">

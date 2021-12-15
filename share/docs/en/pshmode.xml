@@ -1,0 +1,47 @@
+<title>PSHMode</title>
+
+
+<section title="USAGE">
+    <line command="">&lt;COMMAND&gt;</line>
+</section>
+
+<section title="COMMANDS">
+    <line command="run">Run any file</line>
+    <line command="del">Delete files or folders</line>
+    <line command="size">Calculate file or folder size</line>
+    <line command="lsmap">Show files and folders as a tree</line>
+    <line command="findall">To search for files and folders</line>
+    <line command="ccat">Show code with colors</line>
+    <line command="pyprivate">Encrypt any Python file</line>
+    <line command="chmac">Change Mac Address</line>
+    <line command="network-info">to show network information</line>
+    <line command="text-image">Convert Image to Text</line>
+    <line command="decode">Decode any Python file</line>
+    <line command="chash">Check encryption type</line>
+    <line command="plist">To create passwords</line>
+    <line command="bstrings">Extract texts from encrypted files</line>
+</section>
+
+<section title="SHORTCUTS">
+    <line command="c">clear</line>
+    <line command="l">ls -CF</line>
+    <line command="la">ls -a</line>
+    <line command="gc">git clone</line>
+    <line command="p3i">pip3 install</line>
+    <line command="p2i">pip2 install</line>
+    <line command="pi">pip install</line>
+    <line command="cdSD">cd /sdcard</line>
+    <line command="cdDO">cd /sdcard/Download</line>
+</section>
+
+<section title="SYSTEM">
+    <line command="pshmode-config">To modify system variables</line>
+    <line command="exit"> to stop the tool</line>
+</section>
+
+<section title="PSHMODE">
+    <line command="PSHMode">To run</line>
+    <line command="PSHMode update">to update</line>
+    <line command="PSHMode check">To check installed packages and desks</line>
+    <line command="PSHMode delete">To delete the tool completely from the system</line>
+</section>

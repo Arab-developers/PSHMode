@@ -1,0 +1,19 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;option&gt; &lt;mac&gt;</line>
+</section>
+
+<section title="commands">
+     <line command="-m --mac">Direct MAC address change</line>
+     <line command="-i --interface">Change the interface it will run on</line>
+     <line command="-d --default">Reset mac address back to original</line>
+     <line command="-h --help">Displays the help menu</line>
+</section>
+
+<section title="Examples">
+    <line command="chmac">[green]-m[/green] [white]64:A1:B7:44:22:63[/white]</line>
+    <line command="chmac">[green]-m[/green] [white]64:A1:B7:44:22:63[/white] [green]-i[/green] [blue]wlan0[/blue]</line>
+</section>
+
+

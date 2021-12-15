@@ -10,7 +10,7 @@ from N4Tools.Design import Text, Square, Color
 from config import Config
 from rich import print
 
-DOCS_PATH = os.path.join(os.environ.get("VIRTUAL_ENV"), "share/docs")
+DOCS_PATH = os.path.join(os.environ.get("VIRTUAL_ENV"), f"share/docs/{Config.get('settings', 'LANGUAGE')}")
 DOC_NAME = "pshmode" if len(sys.argv) <= 1 else sys.argv[1]
 DOC_FILE_PATH = os.path.join(DOCS_PATH, DOC_NAME.lower() + '.xml')
 DOC_FILE_PATH_TOOLS = os.path.join(os.environ.get("VIRTUAL_ENV"), f"tools/{DOC_NAME.lower()}/README.md")
@@ -70,6 +70,7 @@ class DocsReader:
             tempFixwidth = [key[0] for key in commands]
             tempFixwidth = Text.full(tempFixwidth)
             tempCommands = [key[0] for key in commands]
+            commands.sort()
 
             for command, helpMsg in commands:
                 command = tempFixwidth[tempCommands.index(command)]

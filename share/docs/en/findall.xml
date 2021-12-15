@@ -1,0 +1,10 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;path&gt; &lt;pattren&gt;</line>
+</section>
+
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">/sdcard/scripts/ '\.py$'</line>
+        <line command="{{ TOOL_NAME }}">/home/user/ '\w+\.sh$'</line>
+</section>

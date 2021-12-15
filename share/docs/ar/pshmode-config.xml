@@ -1,0 +1,17 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;command&gt; &lt;option&gt;</line>
+</section>
+
+<section title="commands">
+        <line command="set">لتعيين البيانات أو استبدالها.</line>
+        <line command="get">للحصول على البيانات.</line>
+        <line command="show">لإظهار كل الخيارات والقيم.</line>
+</section>
+
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">set PROMPT_TEXT "MyName"</line>
+        <line command="{{ TOOL_NAME }}">get PROMPT_TEXT</line>
+        <line command="{{ TOOL_NAME }}">show</line>
+</section>

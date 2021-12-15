@@ -1,0 +1,18 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;file&gt; &lt;commands&gt;</line>
+</section>
+
+<section title="commands">
+        <line command = "-l">لإظهار خطوط الشفرة</line>
+        <line command = "-w">لتشوه الكلمات</line>
+        <line command = "-bc">لتغيير لون الخلفية</line>
+</section>
+
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">file.py -bc "#ff0000"</line>
+        <line command="{{ TOOL_NAME }}">file.py -l</line>
+        <line command="{{ TOOL_NAME }}">file.py -w</line>
+        <line command="{{ TOOL_NAME }}">file.py -bc red -l -w</line>
+</section>

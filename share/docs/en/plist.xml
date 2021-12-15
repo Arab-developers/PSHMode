@@ -1,0 +1,20 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;command&gt;</line>
+</section>
+
+<section title="commands">
+        <line command="-o">to set the save file.</line>
+        <line command="-t">to select passwords &lt;type&gt;</line>
+</section>
+
+<section title="types">
+        <line command="nums">to create numeric passwords.</line>
+        <line command="strings">to create text passwords.</line>
+</section>
+
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">-o passwords.txt -t nums 10000 99999</line>
+        <line command="{{ TOOL_NAME }}">-o passwords.txt -t strings "abcdef" </line>
+</section>

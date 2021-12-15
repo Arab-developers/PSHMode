@@ -1,0 +1,12 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;file-or-folder&gt;</line>
+</section>
+
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">filename.py</line>
+        <line command="{{ TOOL_NAME }}">filename.txt</line>
+        <line command="{{ TOOL_NAME }}">filename.png</line>
+        <line command="{{ TOOL_NAME }}">folder</line>
+</section>
