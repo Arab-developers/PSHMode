@@ -24,9 +24,11 @@ function exit() {
     export PS1
     unset _OLD_VIRTUAL_PS1
   fi
-  if [[ $PLATFORM == "termux" && $ZSH_VERSION != "" ]]; then
-    ZSH_AUTOSUGGEST_STRATEGY=()
-    ZSH_HIGHLIGHT_MAXLENGTH=0
+  if [[ $PLATFORM == "termux" ]] | [[ $PLATFORM == "ish shell" ]]; then
+    if [[ $ZSH_VERSION != "" ]]; then
+      ZSH_AUTOSUGGEST_STRATEGY=()
+      ZSH_HIGHLIGHT_MAXLENGTH=0
+    fi
   fi
   source "$VIRTUAL_ENV/etc/onexit.sh" &> /dev/null
   unset VIRTUAL_ENV tiU apVU
@@ -104,7 +106,7 @@ if ! [[ $apVU =~ apVU ]]; then
   return
 fi
 
-if [[ $PLATFORM == "termux" ]]; then
+if [[ $PLATFORM == "termux" ]] | [[ $PLATFORM == "ish shell" ]]; then
   # History configurations
   HISTFILE=~/.zsh_history
   HISTSIZE=1000

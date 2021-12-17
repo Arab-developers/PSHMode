@@ -1,0 +1,79 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import marshal
+from types import CodeType
+
+from rich import print
+
+COPYRIGHTS = [
+    "Py Private",
+    "HackerMode",
+]
+
+
+def get_marshal_data(bytecode: CodeType):
+    for const in bytecode.co_consts:
+        if type(const) == bytes:
+            try:
+                code_object = marshal.loads(const)
+                return code_object
+            except:
+                pass
+    return bytecode
+
+
+def copyright_msg(encode_copyright: str):
+    print(f"# copyright type: [green]{encode_copyright}[/green]")
+
+
+def check_hash(content: str):
+    for copyright in COPYRIGHTS:
+        if copyright in content:
+            print(f"# copyright type: [green]{copyright}[/green]")
+            return None
+
+    try:
+        bytecode = get_marshal_data(compile(content, "string", "exec"))
+        if bytecode.co_consts[0] == "@psh_team":
+            copyright_msg("Py Private")
+            return None
+
+        try:
+            if bytes(marshal.loads(bytecode.co_consts[0]).co_consts[0]).decode() == "@psh_team":
+                copyright_msg("Py Private")
+                return None
+        except:
+            pass
+        _copyright = bytes(marshal.loads(bytecode.co_consts[3]).co_consts[0]).decode()
+        if _copyright == "@psh_team":
+            copyright_msg("Py Private")
+            return None
+
+        _copyright = bytes(marshal.loads(bytecode.co_consts[3]).co_consts).decode()
+        if _copyright == "@psh_team":
+            copyright_msg("Py Private")
+            return None
+
+        print("# copyright type: [red]Unknown[/red]")
+
+    except Exception as err:
+        print("# copyright type: [red]Unknown[/red]")
+
+
+if len(sys.argv) > 1:
+    file = sys.argv[1]
+    if not os.path.isfile(file):
+        exit(f"# error:{file} :file not found!")
+
+    try:
+        with open(file, "r") as f:
+            data = f.read()
+        data = data.replace("Decoded by HackerMode", "")
+        check_hash(data)
+    except UnicodeDecodeError:
+        print("# copyright type: [red]Unknown[/red]")
+
+else:
+    print("USAGE:\n  check-hash file.py")

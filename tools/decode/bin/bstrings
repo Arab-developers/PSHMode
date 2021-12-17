@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import shutil
+import marshal
+
+from types import CodeType
+from rich import print
+
+terminal_width = shutil.get_terminal_size().columns
+
+
+def get_bytecode_data(bytecode: CodeType):
+    for const in bytecode.co_consts:
+        if type(const) == CodeType:
+            get_bytecode_data(const)
+        elif type(const) == bytes:
+            try:
+                codeobj = marshal.loads(const)
+                get_bytecode_data(codeobj)
+            except:
+                print(const)
+                print("-" * terminal_width)
+
+        else:
+            if type(const) == str:
+                if len(const) < 2000:
+                    print(const)
+                    print("-" * terminal_width)
+            else:
+                print(const)
+                print("-" * terminal_width)
+
+
+if len(sys.argv) > 1:
+    file = sys.argv[1]
+    if not os.path.isfile(file):
+        exit(f"# error:{file} :file not found!")
+    try:
+        with open(file, "r") as f:
+            data = f.read()
+        bytecode = compile(data, "strings", "exec")
+    except UnicodeDecodeError:
+        with open(file, "rb") as f:
+            data = f.read()
+        bytecode = marshal.loads(data[16:])
+    get_bytecode_data(bytecode)
+
+else:
+    print("USAGE:\n  bstrings file.py")

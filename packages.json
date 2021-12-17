@@ -1,16 +1,5 @@
 {
   "PACKAGES": {
-    "apt": {
-      "termux": [
-        "apt --fix-broken install"
-      ],
-      "linux": [
-        "sudo apt --fix-broken install"
-      ],
-      "ish shell": [
-        "apk fix"
-      ]
-    },
     "pip3": {
       "termux": [
         "pip3 install --upgrade pip"
@@ -57,21 +46,6 @@
       ],
       "ish shell": [
         "apk add openssl"
-      ]
-    },
-    "dart": {
-      "termux": [
-        "#pkg install dart"
-      ],
-      "linux": [
-        "#sudo apt-get install apt-transport-https",
-        "#sudo sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'",
-        "#sudo sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'",
-        "#sudo apt-get update",
-        "#sudo apt-get install dart"
-      ],
-      "ish shell": [
-        "#echo 'No support yet!'"
       ]
     }
   },

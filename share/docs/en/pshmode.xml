@@ -17,7 +17,7 @@
     <line command="network-info">to show network information</line>
     <line command="text-image">Convert Image to Text</line>
     <line command="decode">Decode any Python file</line>
-    <line command="chash">Check encryption type</line>
+    <line command="check-hash">Check encryption type</line>
     <line command="plist">To create passwords</line>
     <line command="bstrings">Extract texts from encrypted files</line>
 </section>

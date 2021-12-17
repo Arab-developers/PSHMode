@@ -6,7 +6,7 @@ echo "" >$LOG_FILE
 PLATFORM=$(python3 -c "import sys, os, platform;print('win' if sys.platform in ('win32', 'cygwin') else 'macosx' if sys.platform == 'darwin' else 'termux' if os.environ.get('PREFIX') != None else 'ish shell' if platform.release().endswith('ish') else 'linux' if sys.platform.startswith('linux') or sys.platform.startswith('freebsd') else 'unknown')")
 
 # Remove old version from the tool.
-python3 -c 'import subprocess;subprocess.run(["bash", "-i", "-c", "HackerMode delete"], stdout=subprocess.PIPE, text=True, input="y")' &> /dev/null
+python3 -c 'import subprocess;subprocess.run(["bash", "-i", "-c", "HackerMode delete"], stdout=subprocess.PIPE, text=True, input="y")' &>/dev/null
 rm -rif HackerMode ~/.HackerMode ~/../usr/bin/HackerMode &>/dev/null
 rm -f HackerModeInstall &>/dev/null
 rm -rif PSHMode ~/.PSHMode ~/../usr/bin/PSHMode &>/dev/null
@@ -37,6 +37,7 @@ fi
 # Linux installation...
 if [[ "$PLATFORM" == "linux" ]]; then
   # Install packages...
+  sudo apt --fix-broken install
   sudo apt update -y
   sudo apt install python3 -y
   sudo apt install python3-pip -y
@@ -78,6 +79,7 @@ elif [[ "$PLATFORM" == "termux" ]]; then
 
 elif [[ "$PLATFORM" == "ish shell" ]]; then
   # Install packages...
+  apk fix
   apk update
   apk add python3
   apk add musl-dev
@@ -87,9 +89,9 @@ elif [[ "$PLATFORM" == "ish shell" ]]; then
   done
 
   # Add zshrc file.
-  if ! [[ -f  ~/.zshrc ]]; then
+  if ! [[ -f ~/.zshrc ]]; then
     touch ~/.zshrc
-    echo "PS1='%m:%~# '" >> ~/.zshrc
+    echo "PS1='%m:%~# '" >>~/.zshrc
   fi
 
   # Add include files to the system.
