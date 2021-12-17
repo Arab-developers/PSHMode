@@ -30,7 +30,7 @@ function exit() {
       ZSH_HIGHLIGHT_MAXLENGTH=0
     fi
   fi
-  source "$VIRTUAL_ENV/etc/onexit.sh" &> /dev/null
+  source "$VIRTUAL_ENV/etc/onexit.sh" &>/dev/null
   unset VIRTUAL_ENV tiU apVU
 
   if [ ! "${1:-}" = "nondestructive" ]; then
@@ -56,8 +56,13 @@ else
 fi
 
 VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
-apVU=$($VIRTUAL_ENV/lib/shell apVU) &>/dev/null
-tiU=$($VIRTUAL_ENV/lib/shell tiU) &>/dev/null
+if [[ $PLATFORM == "termux" ]]; then
+  apVU=$($VIRTUAL_ENV/lib/shell apVU) &>/dev/null
+  tiU=$($VIRTUAL_ENV/lib/shell tiU) &>/dev/null
+else
+  apVU="apVU"
+  tiU="tiU"
+fi
 
 export VIRTUAL_ENV
 export tiU
@@ -76,13 +81,11 @@ if [ -d $VIRTUAL_ENV/tools ]; then
 fi
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+if [ -d "$HOME/bin" ]; then
+  PATH="$HOME/bin:$PATH"
 fi
 
 export PATH="$VIRTUAL_ENV/bin:$PATH"
-
-
 
 # prompt setting (PSHMode cmd Style) and intro
 
