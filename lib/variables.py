@@ -81,7 +81,7 @@ class Variables:
 
     @property
     def SHELL_COMMAND(self):
-        return "sh" if self.PLATFORME == "ish shell" else "bash"
+        return os.environ["SHELL"]
 
 
 Variables = Variables()
