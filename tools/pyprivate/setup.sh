@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-if [ "$PREFIX" == "" ]; then
+if [[ "$PREFIX" == "" ]]; then
   PREFIX="/usr"
 fi
 
