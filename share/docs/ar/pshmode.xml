@@ -20,6 +20,7 @@
     <line command="check-hash">تحقق من نوع التشفير</line>
     <line command="plist">لإنشاء كلمات مرور</line>
     <line command="bstrings">سحب النصوص من الملفات المشفره</line>
+    <line command="share-shell">للتحكم بشل اخر عن بعد باستخدام نقروك</line>
 </section>
 
 <section title="SHORTCUTS">

@@ -20,6 +20,7 @@
     <line command="check-hash">Check encryption type</line>
     <line command="plist">To create passwords</line>
     <line command="bstrings">Extract texts from encrypted files</line>
+    <line command="share-shell">To control another shell remotely using ngrok</line>
 </section>
 
 <section title="SHORTCUTS">
