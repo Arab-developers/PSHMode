@@ -78,10 +78,10 @@ def cd(path):
 def handle_recv(conn):
     connected = True
     while connected:
-        msg_length = conn.recv(HEADER).decode(FORMAT)
+        msg_length = conn.recv(HEADER).decode(FORMAT).strip()
         if msg_length:
             msg_length = int(msg_length)
-            msg = conn.recv(msg_length).decode(FORMAT)
+            msg = conn.recv(msg_length).decode(FORMAT).strip()
             while not len(msg) == msg_length:
                 msg += conn.recv(msg_length - len(msg)).decode(FORMAT)
 
