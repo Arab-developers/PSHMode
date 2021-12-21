@@ -5,7 +5,7 @@ import shutil
 
 sys.path.append(__file__.rsplit("/", 1)[0])
 from lib.config import Config
-from lib.variables import Variables, TOOL_NAME
+from lib.variables import Variables
 
 RED = '\033[1;31m'
 GREEN = '\033[1;32m'
@@ -175,9 +175,3 @@ class HackerModeInstaller:
                 if os.path.exists(os.path.join(root, dir, "setup.sh")):
                     print(f"Installing {dir} packages...")
                     run_setup(root, dir)
-
-
-if __name__ == "__main__":
-    x = HackerModeInstaller()
-    x.check()
-    x.install()

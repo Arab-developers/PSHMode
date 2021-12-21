@@ -14,6 +14,7 @@ if __name__ == "__main__":
 
     if sys.argv[1] == "set":
         Config.set("settings", sys.argv[2], sys.argv[3])
+        print("[*] DONE ✔")
     elif sys.argv[1] == "get":
         try:
             print(Config.get("settings", sys.argv[2]))

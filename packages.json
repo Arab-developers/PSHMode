@@ -59,7 +59,6 @@
     "bs4",
     "python-nmap",
     "requests",
-    "flask",
     "getmac"
   ]
 }

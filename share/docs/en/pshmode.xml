@@ -37,6 +37,7 @@
 
 <section title="SYSTEM">
     <line command="pshmode-config">To modify system variables</line>
+    <line command="pshmode-fix">to fix common errors</line>
     <line command="exit"> to stop the tool</line>
 </section>
 

@@ -44,6 +44,8 @@ PS1="${BLUE}┌──${LIGHT_BLUE}(${END_BOLD}${LIGHT_RED}$PROMPT_USERNAME${LIGH
 
 unset LIGHT_RED BLUE LIGHT_BLUE END_COLOR END_BOLD LIVE_PATH
 
-
 # PSHMode intro
-# python3 $VIRTUAL_ENV/etc/intro.py
+PSHMODE_INTRO=$(pshmode-config get PSHMODE_INTRO) 2> /dev/null
+if [[ $PSHMODE_INTRO != "" ]]; then
+  eval $PSHMODE_INTRO
+fi

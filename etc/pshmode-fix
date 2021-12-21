@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+
+function pshmode-fix(){
+    # to fix permissions error
+    OLD_PATH=$(pwd)
+    cd $VIRTUAL_ENV
+    chmod +x bin/*
+    chmod -x bin/activate
+    chmod +x tools/*/bin/*
+    cd $OLD_PATH
+    unset OLD_PATH
+
+    echo "[*] DONE ✔"
+}

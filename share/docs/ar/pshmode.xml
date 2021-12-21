@@ -37,6 +37,7 @@
 
 <section title="SYSTEM">
     <line command="pshmode-config">للتعديل في متغيرات النظام</line>
+    <line command="pshmode-fix">لإصلاح الأخطاء الشائعة</line>
     <line command="exit">لإيقاف الأداة</line>
 </section>
 

@@ -35,7 +35,7 @@ function exit() {
 
   if [ ! "${1:-}" = "nondestructive" ]; then
     # Self destruct!
-    unset -f exit pshmode-auto-complete
+    unset -f exit pshmode-auto-complete &> /dev/null
   fi
   #  exit
 }
@@ -116,6 +116,7 @@ fi
 if [[ $tiU =~ tiU ]]; then
   _OLD_VIRTUAL_PS1=$PS1
   source "$VIRTUAL_ENV/etc/bashrc"
+  source "$VIRTUAL_ENV/etc/pshmode-fix"
   export PS1
 else
   python3 -c "print(*'''$tiU'''.split('#'),sep='#')"
