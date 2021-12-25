@@ -34,7 +34,7 @@ def show_code(source: str, temp):
     if not temp:
         p = Process(target=show_code, args=(source, 1))
         p.start()
-        p.join(2)
+        p.join(5)
         if p.is_alive():
             p.kill()
             print("#\033[1;33m can't show the code because the file is too big!\033[0m")
@@ -49,7 +49,13 @@ def no_support():
 
 
 def main(layers=0):
-    source = open_python_file(sys.argv[2 if layers else 1])
+    if len(sys.argv) < 3:
+        os.system("readme decode")
+        exit(0)
+    filename = sys.argv[2 if layers else 1]
+    if not os.path.isfile(filename):
+        exit(f"# File '{filename}' not found!")
+    source = open_python_file(filename)
     if type(source) == bytes:
         no_support()
     source = FakeFunction(source).get_source()
@@ -59,6 +65,7 @@ def main(layers=0):
         show_code(source, 0)
         if input("# stop [y/enter]?: ").strip() == "y":
             exit(0)
+        os.system("clear")
         main(layers=layers + 1)
     else:
         print(source)

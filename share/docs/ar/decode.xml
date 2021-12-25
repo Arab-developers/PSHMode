@@ -1,0 +1,9 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;file&gt; &lt;output&gt;</line>
+</section>
+
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">filename.py out.py</line>
+</section>
