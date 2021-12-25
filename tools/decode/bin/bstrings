@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import os
 import sys
 import shutil
@@ -36,7 +35,7 @@ def get_bytecode_data(bytecode: CodeType):
 if len(sys.argv) > 1:
     file = sys.argv[1]
     if not os.path.isfile(file):
-        exit(f"# error:{file} :file not found!")
+        exit(f"# error:{file} :filename not found!")
     try:
         with open(file, "r") as f:
             data = f.read()
@@ -48,4 +47,4 @@ if len(sys.argv) > 1:
     get_bytecode_data(bytecode)
 
 else:
-    print("USAGE:\n  bstrings file.py")
+    print("USAGE:\n  bstrings filename.py")

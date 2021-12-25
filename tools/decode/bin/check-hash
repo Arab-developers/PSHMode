@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-
 import os
 import sys
-import marshal
-from types import CodeType
+sys.path.insert(0, os.environ.get("VIRTUAL_ENV") + "/tools/decode")
 
+import marshal
 from rich import print
+from types import CodeType
+from utils.bytecode import get_marshal_bytes_from_bytecode
 
 COPYRIGHTS = [
     "Py Private",
@@ -14,14 +15,7 @@ COPYRIGHTS = [
 
 
 def get_marshal_data(bytecode: CodeType):
-    for const in bytecode.co_consts:
-        if type(const) == bytes:
-            try:
-                code_object = marshal.loads(const)
-                return code_object
-            except:
-                pass
-    return bytecode
+    return marshal.loads(get_marshal_bytes_from_bytecode(bytecode))
 
 
 def copyright_msg(encode_copyright: str):
@@ -65,7 +59,7 @@ def check_hash(content: str):
 if len(sys.argv) > 1:
     file = sys.argv[1]
     if not os.path.isfile(file):
-        exit(f"# error:{file} :file not found!")
+        exit(f"# error:{file} :filename not found!")
 
     try:
         with open(file, "r") as f:
@@ -76,4 +70,4 @@ if len(sys.argv) > 1:
         print("# copyright type: [red]Unknown[/red]")
 
 else:
-    print("USAGE:\n  check-hash file.py")
+    print("USAGE:\n  check-hash filename.py")

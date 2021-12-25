@@ -1,0 +1,30 @@
+#!/usr/bin/python3
+import os
+import sys
+sys.path.insert(0, os.environ.get("VIRTUAL_ENV") + "/tools/decode")
+
+import opcode
+opcode.cmp_op = (
+    '<',
+    '<=',
+    '==',
+    '!=',
+    '>',
+    '>=',
+    'in',
+    'not in',
+    'is',
+    'is not',
+    'exception match',
+    'BAD'
+)
+
+import dis
+from utils.bytecode import get_bytecode_from_file
+
+for file in sys.argv[1:]:
+    if os.path.isfile(file):
+        dis.dis(get_bytecode_from_file(file))
+
+if len(sys.argv[1:]) == 0:
+    os.system("readme disassemble")

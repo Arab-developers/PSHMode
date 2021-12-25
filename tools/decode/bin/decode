@@ -1,3 +1,69 @@
 #!/usr/bin/python3
+import os
+import sys
 
-print("please wait for the new update...")
+sys.path.insert(0, os.environ.get("VIRTUAL_ENV") + "/tools/decode")
+
+import opcode
+
+opcode.cmp_op = (
+    '<',
+    '<=',
+    '==',
+    '!=',
+    '>',
+    '>=',
+    'in',
+    'not in',
+    'is',
+    'is not',
+    'exception match',
+    'BAD'
+)
+
+from rich.syntax import Syntax
+from multiprocessing import Process
+from rich.console import Console
+from utils.pysource import FakeFunction
+from algorithms.pyfile import open_python_file
+
+console = Console()
+
+
+def show_code(source: str, temp):
+    if not temp:
+        p = Process(target=show_code, args=(source, 1))
+        p.start()
+        p.join(2)
+        if p.is_alive():
+            p.kill()
+            print("#\033[1;33m can't show the code because the file is too big!\033[0m")
+    else:
+        syntax = Syntax(source, "python", line_numbers=True)
+        console.print(syntax)
+
+
+def no_support():
+    print("# No support currently! please wait for the new updates.")
+    exit(0)
+
+
+def main(layers=0):
+    source = open_python_file(sys.argv[2 if layers else 1])
+    if type(source) == bytes:
+        no_support()
+    source = FakeFunction(source).get_source()
+    if type(source) == str:
+        with open(sys.argv[2], "w") as out:
+            out.write(source)
+        show_code(source, 0)
+        if input("# stop [y/enter]?: ").strip() == "y":
+            exit(0)
+        main(layers=layers + 1)
+    else:
+        print(source)
+        no_support()
+
+
+if __name__ == "__main__":
+    main()
