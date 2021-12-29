@@ -139,7 +139,7 @@ class Server(AccessShell):
                     break
 
         except BrokenPipeError:
-            console.out("# [red]The server can't send data to the client![/red]")
+            console.print("# [red]The server can't send data to the client![/red]")
             return ""
 
         # receive and listen for the data from the client.

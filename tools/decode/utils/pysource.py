@@ -20,7 +20,12 @@ class FakeFunction:
         builtins.compile = self._fake_compile
 
         # execute the source code.
-        self.old_exec(source)
+        try:
+            self.old_exec(source)
+        except ModuleNotFoundError as err:
+            print("#", err)
+            print("# install the Module first then try again.")
+            exit(1)
 
         # to replace all fake functions with the
         # real function.

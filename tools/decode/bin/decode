@@ -1,31 +1,13 @@
 #!/usr/bin/python3
 import os
 import sys
-
 sys.path.insert(0, os.environ.get("VIRTUAL_ENV") + "/tools/decode")
-
-import opcode
-
-opcode.cmp_op = (
-    '<',
-    '<=',
-    '==',
-    '!=',
-    '>',
-    '>=',
-    'in',
-    'not in',
-    'is',
-    'is not',
-    'exception match',
-    'BAD'
-)
 
 from rich.syntax import Syntax
 from multiprocessing import Process
 from rich.console import Console
 from utils.pysource import FakeFunction
-from algorithms.pyfile import open_python_file
+from algorithms.pyfile import open_python_file, get_file_type
 
 console = Console()
 
@@ -52,23 +34,31 @@ def main(layers=0):
     if len(sys.argv) < 3:
         os.system("readme decode")
         exit(0)
+    
     filename = sys.argv[2 if layers else 1]
     if not os.path.isfile(filename):
         exit(f"# File '{filename}' not found!")
+
     source = open_python_file(filename)
-    if type(source) == bytes:
+    file_type = get_file_type(filename)
+    if type(source) == bytes or file_type != "py":
         no_support()
     source = FakeFunction(source).get_source()
+
     if type(source) == str:
         with open(sys.argv[2], "w") as out:
             out.write(source)
         show_code(source, 0)
-        if input("# stop [y/enter]?: ").strip() == "y":
+        layers += 1
+        print(f"# file-type: {file_type}")
+        print(f"# layers: {layers}")
+        if input("# stop? [y/enter]: ").strip() == "y":
+            if input("# delete old file? [y/n]: ").strip() == "y":
+                os.remove(sys.argv[1])
             exit(0)
         os.system("clear")
-        main(layers=layers + 1)
+        main(layers=layers)
     else:
-        print(source)
         no_support()
 
 
