@@ -47,8 +47,20 @@
       "ish shell": [
         "apk add openssl"
       ]
+    },
+    "tree":{
+      "termux": [
+        "pkg install tree"
+      ],
+      "linux": [
+        "sudo apt install tree"
+      ],
+      "ish shell": [
+        "apk add tree"
+      ]
     }
   },
+
   "PYTHON3_MODULES": [
     "N4Tools",
     "rich",
