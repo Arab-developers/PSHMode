@@ -58,6 +58,28 @@
       "ish shell": [
         "apk add tree"
       ]
+    },
+    "cmake":{
+      "termux": [
+        "pkg install cmake"
+      ],
+      "linux": [
+        "sudo apt install cmake"
+      ],
+      "ish shell": [
+        "apk add cmake"
+      ]
+    },
+    "make":{
+      "termux": [
+        "pkg install make"
+      ],
+      "linux": [
+        "sudo apt install make"
+      ],
+      "ish shell": [
+        "apk add make"
+      ]
     }
   },
 
