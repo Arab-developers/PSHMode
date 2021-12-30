@@ -11,7 +11,7 @@ FILE_NAME="pyprivate"
 mkdir "bin" &>/dev/null
 
 if [[ "$PLATFORM" == "ish shell" ]]; then
-  gcc -Os -I $PREFIX/include/python$VERSION -o bin/$FILE_NAME $FILE_NAME.c /usr/lib/libpython3.8.so.1.0 -lpthread -lm -lutil -ldl
+  gcc -Os -I $PREFIX/include/python$VERSION -o bin/$FILE_NAME $FILE_NAME.c /usr/lib/libpython3.9.so.1.0 -lpthread -lm -lutil -ldl
 else
   gcc -Os -I $PREFIX/include/python$VERSION -o bin/$FILE_NAME $FILE_NAME.c -lpython$VERSION -lpthread -lm -lutil -ldl
 fi
