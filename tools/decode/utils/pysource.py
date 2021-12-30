@@ -1,8 +1,14 @@
 import marshal
+import os
+import sys
+sys.path.insert(0, os.environ.get("VIRTUAL_ENV") + "/tools/decode")
+
 import base64
 import builtins
+import webbrowser
 from types import CodeType
 from typing import Union
+from algorithms.filters import eval_filter
 
 
 class FakeFunction:
@@ -19,13 +25,31 @@ class FakeFunction:
         marshal.loads = self._fake_loads
         builtins.compile = self._fake_compile
 
+        # ignore spamm function
+        webbrowser.open = lambda *args, **kwargs: None
+        os.system = lambda *agrs, **kwargs: None
+
         # execute the source code.
         try:
+            if "eval" in source:
+                source = eval_filter(source)
             self.old_exec(source)
         except ModuleNotFoundError as err:
             print("#", err)
             print("# install the Module first then try again.")
             exit(1)
+        except SystemError:
+            print("# unknown opcode! try to use another python3 version to decode this file.")
+            exit(1)
+        except NameError as err:
+            if self.pyc_source != None:
+                pass
+            else:
+                print("#", err)
+                print("# there is a NameError in the file fix it first and try again.")
+                exit(1)
+        except KeyboardInterrupt:
+            pass
 
         # to replace all fake functions with the
         # real function.
@@ -42,6 +66,7 @@ class FakeFunction:
                     return marshal.loads(self.pyc_source)
             else:
                 return str(self.pyc_source)
+        print(self.pyc_source)
         return None
 
     def _fake_exec(self, *args, **kwargs):

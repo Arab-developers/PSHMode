@@ -1,21 +1,30 @@
+import os
+import sys
+sys.path.insert(0, os.environ.get("VIRTUAL_ENV") + "/tools/decode")
+
+from types import CodeType
 from typing import Union
 from zipfile import ZipFile
+from utils.bytecode import clean_source
 
-def open_file(filename) -> Union[str, bytes]:
+def open_file(filename) -> Union[str, bytes, CodeType]:
     try:
         with open(filename, "r") as r_file:
-            return r_file.read()
+            return clean_source(r_file.read())
     except UnicodeDecodeError:
         with open(filename, "rb") as rb_file:
             return rb_file.read()
 
 
-def open_python_file(filename) -> Union[str, bytes]:
+def open_python_file(filename) -> Union[str, bytes, CodeType]:
     source = open_file(filename)
     if get_source_type(source) == "zip":
         archive = ZipFile(filename)
         py_filename = archive.filelist[0].filename
-        return archive.read(py_filename)
+        source = archive.read(py_filename)
+        if get_source_type(source) == "py":
+            return clean_source(source)
+        return source
     return source
 
 

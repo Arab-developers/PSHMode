@@ -30,26 +30,22 @@ def no_support():
     exit(0)
 
 
-def main(layers=0):
-    if len(sys.argv) < 3:
-        os.system("readme decode")
-        exit(0)
-    
-    filename = sys.argv[2 if layers else 1]
-    if not os.path.isfile(filename):
-        exit(f"# File '{filename}' not found!")
-
+def decode_handler(filename, layers):
     source = open_python_file(filename)
     file_type = get_file_type(filename)
-    if type(source) == bytes or file_type != "py":
+
+    if type(source) == str:
+        source: Union[str, None, CodeType] = FakeFunction(source).get_source()
+        print (source)
+    else:
         no_support()
-    source = FakeFunction(source).get_source()
 
     if type(source) == str:
         with open(sys.argv[2], "w") as out:
             out.write(source)
         show_code(source, 0)
         layers += 1
+
         print(f"# file-type: {file_type}")
         print(f"# layers: {layers}")
         if input("# stop? [y/enter]: ").strip() == "y":
@@ -60,6 +56,18 @@ def main(layers=0):
         main(layers=layers)
     else:
         no_support()
+
+
+def main(layers=0):
+    if len(sys.argv) < 3:
+        os.system("readme decode")
+        exit(0)
+    
+    filename = sys.argv[2 if layers else 1]
+    if not os.path.isfile(filename):
+        exit(f"# File '{filename}' not found!")
+
+    decode_handler(filename, layers)
 
 
 if __name__ == "__main__":

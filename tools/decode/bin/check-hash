@@ -19,13 +19,17 @@ def get_marshal_data(bytecode: CodeType):
 
 
 def copyright_msg(encode_copyright: str):
-    print(f"# copyright type: [green]{encode_copyright}[/green]")
+    print(f"# {file}: [green]{encode_copyright}[/green]")
+
+
+def no_copyright_msg():
+    sys.stderr.write(f"# {file}: Unknown\n")
 
 
 def check_hash(content: str):
     for copyright in COPYRIGHTS:
         if copyright in content:
-            print(f"# copyright type: [green]{copyright}[/green]")
+            copyright_msg(copyright)
             return None
 
     try:
@@ -50,24 +54,22 @@ def check_hash(content: str):
             copyright_msg("Py Private")
             return None
 
-        print("# copyright type: [red]Unknown[/red]")
+        no_copyright_msg()
 
     except Exception as err:
-        print("# copyright type: [red]Unknown[/red]")
+        no_copyright_msg()
 
+if __name__ == "__main__":
+    for file in sys.argv[1:]:
+        if not os.path.isfile(file):
+            exit(f"# error:{file} :filename not found!")
 
-if len(sys.argv) > 1:
-    file = sys.argv[1]
-    if not os.path.isfile(file):
-        exit(f"# error:{file} :filename not found!")
-
-    try:
-        with open(file, "r") as f:
-            data = f.read()
-        data = data.replace("Decoded by HackerMode", "")
-        check_hash(data)
-    except UnicodeDecodeError:
-        print("# copyright type: [red]Unknown[/red]")
-
-else:
-    print("USAGE:\n  check-hash filename.py")
+        try:
+            with open(file, "r") as f:
+                data = f.read()
+            data = data.replace("Decoded by HackerMode", "")
+            check_hash(data)
+        except UnicodeDecodeError:
+           no_copyright_msg()
+    if len(sys.argv) == 1:
+        print("USAGE:\n  check-hash filename.py")
