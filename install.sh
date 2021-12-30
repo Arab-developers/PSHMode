@@ -95,12 +95,14 @@ elif [[ "$PLATFORM" == "ish shell" ]]; then
   fi
 
   # Add include files to the system.
-  if ! [[ -f /usr/include/python3.8/Python.h ]]; then
-    wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tar.xz
-    tar -xvf Python-3.8.10.tar.xz Python-3.8.10/Include
-    rm -f Python-3.8.10.tar.xz
-    mv Python-3.8.10/Include/* /usr/include/python3.8/
-    rm -rif Python-3.8.10
+  PY_VERSION_3_ITEMS=$(python3 -c 'import sys;print(sys.version.split(" ")[0])')
+  PY_VERSION=$(python3 -c 'import sys;print(sys.version.split(" ")[0].rsplit(".", 1)[0])')
+  if ! [[ -f /usr/include/python$PY_VERSION/Python.h ]]; then
+    wget https://www.python.org/ftp/python/$PY_VERSION_3_ITEMS/Python-$PY_VERSION_3_ITEMS.tar.xz
+    tar -xvf Python-$PY_VERSION_3_ITEMS.tar.xz Python-$PY_VERSION_3_ITEMS/Include
+    rm -f Python-$PY_VERSION_3_ITEMS.tar.xz
+    mv Python-$PY_VERSION_3_ITEMS/Include/* /usr/include/python$PY_VERSION/
+    rm -rif Python-$PY_VERSION_3_ITEMS
   fi
 
   # Download the tool.
