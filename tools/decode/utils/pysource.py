@@ -9,18 +9,24 @@ import webbrowser
 from types import CodeType
 from typing import Union
 from algorithms.filters import eval_filter
+from subprocess import Popen, PIPE
 
 
 class FakeFunction:
-    def __init__(self, source: str):
+    def __init__(self, source: str, filename: str):
+        global __file__
         self.pyc_source = None
 
         # to save the real functions.
+        self.old_webbrowser_open = webbrowser.open
+        self.old_os_system = os.system
+        self.old__file__ = __file__
         self.old_exec = builtins.exec
         self.old_loads = marshal.loads
         self.old_compile = builtins.compile
 
         # change real functions to fake function.
+        __file__ = filename
         exec = self._fake_exec
         marshal.loads = self._fake_loads
         builtins.compile = self._fake_compile
@@ -53,6 +59,9 @@ class FakeFunction:
 
         # to replace all fake functions with the
         # real function.
+        webbrowser.open = self.old_webbrowser_open
+        os.system = self.old_os_system
+        __file__ = self.old__file__
         builtins.exec = self.old_exec
         marshal.loads = self.old_loads
         builtins.compile = self.old_compile
@@ -66,7 +75,6 @@ class FakeFunction:
                     return marshal.loads(self.pyc_source)
             else:
                 return str(self.pyc_source)
-        print(self.pyc_source)
         return None
 
     def _fake_exec(self, *args, **kwargs):
@@ -82,3 +90,16 @@ class FakeFunction:
         if type(args[0]) in (bytes, str):
             self.pyc_source = args[0]
         return self.old_compile(*args, **kwargs)
+
+
+class DecompilePyc:
+    def __init__(self, filename: str):
+        self.filename = filename
+        self.std = Popen([os.environ.get("VIRTUAL_ENV") + "/tools/decode/pycdc/pycdc", filename], stdout=PIPE, stderr=PIPE)
+
+    def get_source(self) -> str:
+        err = self.std.stderr.read()
+        if err:
+            print(err.decode())
+            exit(1)
+        return self.std.stdout.read().decode()

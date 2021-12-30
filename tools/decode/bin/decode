@@ -6,7 +6,7 @@ sys.path.insert(0, os.environ.get("VIRTUAL_ENV") + "/tools/decode")
 from rich.syntax import Syntax
 from multiprocessing import Process
 from rich.console import Console
-from utils.pysource import FakeFunction
+from utils.pysource import FakeFunction, DecompilePyc
 from algorithms.pyfile import open_python_file, get_file_type
 
 console = Console()
@@ -30,20 +30,27 @@ def no_support():
     exit(0)
 
 
+def save_file(source):
+    with open(sys.argv[2], "w") as out:
+        out.write(source)
+    show_code(source, 0)
+
+
 def decode_handler(filename, layers):
     source = open_python_file(filename)
     file_type = get_file_type(filename)
 
-    if type(source) == str:
-        source: Union[str, None, CodeType] = FakeFunction(source).get_source()
-        print (source)
+    if file_type == "zip":
+       pass
+    elif type(source) == str:
+        source: Union[str, None, CodeType] = FakeFunction(source, filename).get_source()
+    elif type(source) == bytes:
+        source: str = DecompilePyc(filename).get_source()
     else:
         no_support()
 
     if type(source) == str:
-        with open(sys.argv[2], "w") as out:
-            out.write(source)
-        show_code(source, 0)
+        save_file(source)
         layers += 1
 
         print(f"# file-type: {file_type}")

@@ -38,9 +38,11 @@ def get_source_type(source) -> str:
         if b'PK\x03\x04' in source:
             return "zip"
         else:
-            return "pyc"
-    except SyntaxError:
-        return "unknow"
+            try:
+                source.decode()
+                return "py"
+            except Exception:
+                return "pyc"
 
 
 def get_file_type(filename) -> str:
