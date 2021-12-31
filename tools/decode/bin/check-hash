@@ -20,39 +20,34 @@ def get_marshal_data(bytecode: CodeType):
 
 def copyright_msg(encode_copyright: str):
     print(f"# {file}: [green]{encode_copyright}[/green]")
-
+    exit(0)
 
 def no_copyright_msg():
     sys.stderr.write(f"# {file}: Unknown\n")
-
+    exit(1)
 
 def check_hash(content: str):
     for copyright in COPYRIGHTS:
         if copyright in content:
             copyright_msg(copyright)
-            return None
 
     try:
         bytecode = get_marshal_data(compile(content, "string", "exec"))
         if bytecode.co_consts[0] == "@psh_team":
             copyright_msg("Py Private")
-            return None
 
         try:
             if bytes(marshal.loads(bytecode.co_consts[0]).co_consts[0]).decode() == "@psh_team":
                 copyright_msg("Py Private")
-                return None
         except:
             pass
         _copyright = bytes(marshal.loads(bytecode.co_consts[3]).co_consts[0]).decode()
         if _copyright == "@psh_team":
             copyright_msg("Py Private")
-            return None
 
         _copyright = bytes(marshal.loads(bytecode.co_consts[3]).co_consts).decode()
         if _copyright == "@psh_team":
             copyright_msg("Py Private")
-            return None
 
         no_copyright_msg()
 

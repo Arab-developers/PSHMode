@@ -10,6 +10,9 @@ from types import CodeType
 from typing import Union
 from algorithms.filters import eval_filter
 from subprocess import Popen, PIPE
+from rich.console import Console
+
+console = Console()
 
 
 class FakeFunction:
@@ -98,8 +101,30 @@ class DecompilePyc:
         self.std = Popen([os.environ.get("VIRTUAL_ENV") + "/tools/decode/pycdc/pycdc", filename], stdout=PIPE, stderr=PIPE)
 
     def get_source(self) -> str:
-        err = self.std.stderr.read()
-        if err:
-            print(err.decode())
+        out = self.std.stdout.read().decode()
+        err = self.std.stderr.read().decode()
+        if out and err:
+            return out + '\n' + err
+        elif out:
+            return out
+        else:
+            print(err)
             exit(1)
-        return self.std.stdout.read().decode()
+
+
+class DecompileMarshal:
+    def __init__(self, bytecode: CodeType):
+        self._data: bytes = marshal.dumps(bytecode)
+        self._magic_number: bytes = b'a\r\r\n\x00\x00\x00\x00\xe2\xb6\xcea\r\x00\x00\x00'
+
+    def get_source(self) -> bytes:
+        return self._magic_number + self._data
+
+
+def check(filename):
+    std = Popen(["check-hash", filename], stdout=PIPE, stderr=PIPE)
+    out = std.stdout.read().decode()
+    if out:
+        console.print(f'# encode type: [red]{out.split(": ")[-1][:-1]}[/red]')
+        console.print("# This file cannot be decrypted because it uses our encryption.")
+        exit(0)

@@ -8,6 +8,16 @@ __pycache__/
 lib/shell
 tools/plits/bin
 
+# C++ extensions
+tools/decode/pycdc/CMakeCache.txt
+tools/decode/pycdc/CMakeFiles/
+tools/decode/pycdc/Makefile
+tools/decode/pycdc/bytes/*.cpp
+tools/decode/pycdc/cmake_install.cmake
+tools/decode/pycdc/libpycxx.a
+tools/decode/pycdc/pycdas
+tools/decode/pycdc/pycdc
+
 # Distribution / packaging
 .Python
 build/
