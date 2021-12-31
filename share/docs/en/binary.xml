@@ -1,0 +1,14 @@
+<title>{{ TOOL_NAME }}</title>
+
+<section title="USAGE">
+        <line command="{{ TOOL_NAME }}">&lt;command&gt; &lt;pattren&gt;</line>
+</section>
+<section title="commands"> 
+        <line command="-d">to decode binary</line>
+        <line command="-e">to encode text to binary</line>
+</section>
+</section>
+<section title="examples">
+        <line command="{{ TOOL_NAME }}">-d "Example"</line>
+        <line command="{{ TOOL_NAME }}">-e "01001110011000010110110101100101"</line>
+</section>

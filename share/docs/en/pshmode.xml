@@ -21,6 +21,7 @@
     <line command="plist">To create passwords</line>
     <line command="bstrings">Extract texts from encrypted files</line>
     <line command="share-shell">To control another shell remotely using ngrok</line>
+    <line command="binary">To decode and encode binarys</line>
 </section>
 
 <section title="SHORTCUTS">
