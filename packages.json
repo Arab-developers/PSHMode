@@ -25,6 +25,18 @@
         "apk add gcc"
       ]
     },
+    "g++": {
+      "termux": [
+        "pkg install clang"
+      ],
+      "linux": [
+        "sudo apt install g++",
+        "sudo apt install pentium-builder"
+      ],
+      "ish shell": [
+        "apk add g++"
+      ]
+    },
     "nmap": {
       "termux": [
         "pkg install nmap"
@@ -86,8 +98,6 @@
   "PYTHON3_MODULES": [
     "N4Tools",
     "rich",
-    "uncompyle6",
-    "pyfiglet",
     "python-bidi",
     "arabic-reshaper",
     "bs4",

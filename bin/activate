@@ -24,7 +24,12 @@ function exit() {
     export PS1
     unset _OLD_VIRTUAL_PS1
   fi
-  if [[ $PLATFORM == "termux" ]] | [[ $PLATFORM == "ish shell" ]]; then
+  if [[ $PLATFORM == "termux" ]]; then
+    if [[ $ZSH_VERSION != "" ]]; then
+      ZSH_AUTOSUGGEST_STRATEGY=()
+      ZSH_HIGHLIGHT_MAXLENGTH=0
+    fi
+  elif [[ $PLATFORM == "ish shell" ]];then
     if [[ $ZSH_VERSION != "" ]]; then
       ZSH_AUTOSUGGEST_STRATEGY=()
       ZSH_HIGHLIGHT_MAXLENGTH=0
