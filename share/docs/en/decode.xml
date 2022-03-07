@@ -4,6 +4,14 @@
         <line command="{{ TOOL_NAME }}">&lt;file&gt; &lt;output&gt;</line>
 </section>
 
+<section title="commands">
+	<line command="-o">To keep the original file</line>
+	<line command=" *">Decrypt all files in the current path</line>
+</section>
+
 <section title="examples">
-        <line command="{{ TOOL_NAME }}">filename.py out.py</line>
+        <line command="{{ TOOL_NAME }}">filename.py</line>
+        <line command="{{ TOOL_NAME }}">filename1.py filename2.py filename3.py</line>
+        <line command="{{ TOOL_NAME }}">filename.py -o out.py</line>
+        <line command="{{ TOOL_NAME }}">*</line>
 </section>

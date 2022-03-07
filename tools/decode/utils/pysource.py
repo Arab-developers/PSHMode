@@ -1,13 +1,14 @@
 import marshal
 import os
 import sys
+
 sys.path.insert(0, os.environ.get("VIRTUAL_ENV") + "/tools/decode")
 
 import base64
 import builtins
 import webbrowser
 from types import CodeType
-from typing import Union
+from typing import Union, Optional
 from algorithms.filters import eval_filter
 from subprocess import Popen, PIPE
 from rich.console import Console
@@ -46,17 +47,14 @@ class FakeFunction:
         except ModuleNotFoundError as err:
             print("#", err)
             print("# install the Module first then try again.")
-            exit(1)
         except SystemError:
             print("# unknown opcode! try to use another python3 version to decode this file.")
-            exit(1)
         except NameError as err:
-            if self.pyc_source != None:
+            if self.pyc_source is not None:
                 pass
             else:
                 print("#", err)
                 print("# there is a NameError in the file fix it first and try again.")
-                exit(1)
         except KeyboardInterrupt:
             pass
 
@@ -98,9 +96,10 @@ class FakeFunction:
 class DecompilePyc:
     def __init__(self, filename: str):
         self.filename = filename
-        self.std = Popen([os.environ.get("VIRTUAL_ENV") + "/tools/decode/pycdc/pycdc", filename], stdout=PIPE, stderr=PIPE)
+        self.std = Popen([os.environ.get("VIRTUAL_ENV") + "/tools/decode/pycdc/pycdc", filename], stdout=PIPE,
+                         stderr=PIPE)
 
-    def get_source(self) -> str:
+    def get_source(self) -> Optional[str]:
         out = self.std.stdout.read().decode()
         err = self.std.stderr.read().decode()
         if out and err:
@@ -109,7 +108,7 @@ class DecompilePyc:
             return out
         else:
             print(err)
-            exit(1)
+            return None
 
 
 class DecompileMarshal:
@@ -121,10 +120,11 @@ class DecompileMarshal:
         return self._magic_number + self._data
 
 
-def check(filename):
+def check(filename) -> bool:
     std = Popen(["check-hash", filename], stdout=PIPE, stderr=PIPE)
     out = std.stdout.read().decode()
     if out:
         console.print(f'# encode type: [red]{out.split(": ")[-1][:-1]}[/red]')
         console.print("# This file cannot be decrypted because it uses our encryption.")
-        exit(0)
+        return True
+    return False
