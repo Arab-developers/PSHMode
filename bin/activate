@@ -81,13 +81,16 @@ else
 fi
 
 VIRTUAL_ENV=${_FILE_SOURCE_PATH%/*/*}
-if [[ $PLATFORM == "termux" ]]; then
-  apVU=$($VIRTUAL_ENV/lib/shell apVU) &>/dev/null
-  tiU=$($VIRTUAL_ENV/lib/shell tiU) &>/dev/null
-else
-  apVU="apVU"
-  tiU="tiU"
-fi
+#if [[ $PLATFORM == "termux" ]]; then
+#  apVU=$($VIRTUAL_ENV/lib/shell apVU) &>/dev/null
+#  tiU=$($VIRTUAL_ENV/lib/shell tiU) &>/dev/null
+#else
+#  apVU="apVU"
+#  tiU="tiU"
+#fi
+
+apVU="apVU"
+tiU="tiU"
 
 export VIRTUAL_ENV
 export tiU
